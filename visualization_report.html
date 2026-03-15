@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Model Görselleştirme Raporu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .metric-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .metric-bar {
+            background: #eee;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+        }
+        
+        .visualization {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .visualization h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .visualization-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .description {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .report-details {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .report-details h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+        
+        .detail-value {
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        .good {
+            color: #27ae60;
+        }
+        
+        .warning {
+            color: #f39c12;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .summary-text {
+            color: #555;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 ML Model Görselleştirme Raporu</h1>
+            <p>Kredi Risk Tahmini Modeli - Performans Analizi</p>
+        </div>
+        
+        <!-- Metrics Summary -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Accuracy (Doğruluk)</h3>
+                <div class="metric-value">85.47%</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 85.47%"></div>
+                </div>
+                <small>Test setinde doğru tahmin</small>
+            </div>
+            
+            <div class="metric-card">
+                <h3>Precision (Kesinlik)</h3>
+                <div class="metric-value">64.75%</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 64.75%"></div>
+                </div>
+                <small>Riskli olarak tahmin edilen</small>
+            </div>
+            
+            <div class="metric-card">
+                <h3>Recall (Duyarlılık)</h3>
+                <div class="metric-value">75.64%</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 75.64%"></div>
+                </div>
+                <small>Gerçek riskli olanları bulma</small>
+            </div>
+            
+            <div class="metric-card">
+                <h3>F1-Score (Denge)</h3>
+                <div class="metric-value">69.77%</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 69.77%"></div>
+                </div>
+                <small>Precision ve Recall dengesi</small>
+            </div>
+            
+            <div class="metric-card">
+                <h3>ROC-AUC</h3>
+                <div class="metric-value good">89.21%</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 89.21%; background: linear-gradient(90deg, #27ae60, #2ecc71);"></div>
+                </div>
+                <small>Model ayrım yeteneği</small>
+            </div>
+        </div>
+        
+        <!-- Visualization 1: Correlation Matrix -->
+        <div class="visualization">
+            <h2>1️⃣ Korelasyon Matrisi (Heatmap)</h2>
+            <img src="correlation_matrix.png" alt="Correlation Matrix" class="visualization-image">
+            <div class="description">
+                <strong>🔍 Açıklama:</strong><br>
+                Bu heatmap, veri setindeki sayısal özellikler arasındaki korelasyon ilişkilerini gösterir. 
+                Kırmızı renkler pozitif korelasyonu, mavi renkler negatif korelasyonu temsil eder. 
+                Değerleri (-1 ile 1 arasında) yorumlamak:
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>1.0:</strong> Mükemmel pozitif korelasyon</li>
+                    <li><strong>0.0:</strong> Korelasyon yok</li>
+                    <li><strong>-1.0:</strong> Mükemmel negatif korelasyon</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Visualization 2: Confusion Matrix -->
+        <div class="visualization">
+            <h2>2️⃣ Confusion Matrix (Karışıklık Matrisi)</h2>
+            <img src="confusion_matrix.png" alt="Confusion Matrix" class="visualization-image">
+            <div class="description">
+                <strong>🔍 Açıklama:</strong><br>
+                Modelin tahminin doğruluğunu 2x2 matris ile gösterir:
+                <table style="margin-top: 10px;">
+                    <tr>
+                        <th style="background: #667eea;">Metrik</th>
+                        <th style="background: #667eea;">Açıklama</th>
+                        <th style="background: #667eea;">Değer</th>
+                    </tr>
+                    <tr>
+                        <td><strong>TP (True Positive)</strong></td>
+                        <td>Doğru tahmin edilen riskli müşteri</td>
+                        <td><strong>1093</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>TN (True Negative)</strong></td>
+                        <td>Doğru tahmin edilen sağlıklı müşteri</td>
+                        <td><strong>4477</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>FP (False Positive)</strong></td>
+                        <td>Yanlış tahmin edilen riskli</td>
+                        <td><strong>595</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>FN (False Negative)</strong></td>
+                        <td>Yanlış tahmin edilen sağlıklı</td>
+                        <td><strong>352</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Visualization 3: Success Metrics -->
+        <div class="visualization">
+            <h2>3️⃣ Başarı Metrikleri Grafiği</h2>
+            <img src="success_metrics.png" alt="Success Metrics" class="visualization-image">
+            <div class="description">
+                <strong>🔍 Açıklama:</strong><br>
+                Sol taraf: 5 ana metriği bar grafik ile gösterir. Sağ taraf: Radar grafik ile performansın radyal görünümünü sunar.
+                Daha büyük açı = Daha iyi performans.
+            </div>
+        </div>
+        
+        <!-- Detailed Report -->
+        <div class="report-details">
+            <h2>📈 Detaylı Başarı Raporu</h2>
+            
+            <h3 style="color: #555; margin-top: 20px; margin-bottom: 15px;">📊 Analiz Özeti</h3>
+            <div class="detail-row">
+                <span class="detail-label">Test Veri Seti Boyutu</span>
+                <span class="detail-value">6517 örnek</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Pozitif Sınıf (Riskli)</span>
+                <span class="detail-value">1445 örnek (22.2%)</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Negatif Sınıf (Sağlıklı)</span>
+                <span class="detail-value">5072 örnek (77.8%)</span>
+            </div>
+            
+            <h3 style="color: #555; margin-top: 30px; margin-bottom: 15px;">🎯 Confusion Matrix Analizi</h3>
+            <div class="detail-row">
+                <span class="detail-label">Duyarlılık (Sensitivity)</span>
+                <span class="detail-value good">75.64%</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Özgüllük (Specificity)</span>
+                <span class="detail-value good">88.27%</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Yanlış Pozitif Oranı</span>
+                <span class="detail-value warning">11.73%</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Yanlış Negatif Oranı</span>
+                <span class="detail-value warning">24.36%</span>
+            </div>
+            
+            <h3 style="color: #555; margin-top: 30px; margin-bottom: 15px;">📋 Sınıf Bazlı Performans</h3>
+            <table>
+                <tr>
+                    <th>Sınıf</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-Score</th>
+                    <th>Destek (Support)</th>
+                </tr>
+                <tr>
+                    <td><strong>Sağlıklı</strong></td>
+                    <td>93%</td>
+                    <td>88%</td>
+                    <td>90%</td>
+                    <td>5072</td>
+                </tr>
+                <tr>
+                    <td><strong>Riskli</strong></td>
+                    <td>65%</td>
+                    <td>76%</td>
+                    <td>70%</td>
+                    <td>1445</td>
+                </tr>
+            </table>
+            
+            <h3 style="color: #555; margin-top: 30px; margin-bottom: 15px;">💡 İşletme Perspektifi</h3>
+            <div class="summary-text">
+                <strong>Güçlü Yanlar:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>✅ <strong>Yüksek Accuracy:</strong> Modelin %85.47 doğrulukla tahmin yaptığı</li>
+                    <li>✅ <strong>Mükemmel ROC-AUC:</strong> %89.21 ile sınıfları ayırma yeteneği çok iyi</li>
+                    <li>✅ <strong>Sağlıklı Müşterileri Tanıma:</strong> %93 precision ile hassas tahminler</li>
+                </ul>
+                
+                <strong style="display: block; margin-top: 15px;">İyileştirme Alanları:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>⚠️ <strong>Riskli Müşteri Tahminlemesi:</strong> %65 precision ile bazı yanlış pozitifler oluşuyor</li>
+                    <li>⚠️ <strong>Eksik Riskli Tespiti:</strong> %24 False Negative oranı (352 riskli kaçırılıyor)</li>
+                </ul>
+                
+                <strong style="display: block; margin-top: 15px;">Öneriler:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>📌 Riski minimize etmek için threshold'u düşürebilirsiniz (daha hassas)</li>
+                    <li>📌 Riskli müşteriler için manuel inceleme prosesi ekleyebilirsiniz</li>
+                    <li>📌 Modeli yeni verilerle düzenli olarak yeniden eğitin</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>🔬 <strong>FinWise ML Projekti</strong> - Kredi Risk Tahmini Modeli</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Oluşturma Tarihi: <strong id="date"></strong></p>
+        </div>
+    </div>
+    
+    <script>
+        // Set current date
+        document.getElementById('date').textContent = new Date().toLocaleDateString('tr-TR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    </script>
+</body>
+</html>

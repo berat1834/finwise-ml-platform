@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-11-28T00:40:00.562642",
+  "dataset_drift": false,
+  "drift_share": 0.18181818181818182,
+  "number_of_drifted_columns": 2,
+  "drifted_features": [
+    {
+      "feature": "loan_int_rate",
+      "drift_score": 0.09366666666666666,
+      "stattest_name": "ks_2samp",
+      "pvalue": 0.03274189858411248
+    },
+    {
+      "feature": "cb_person_cred_hist_length",
+      "drift_score": 0.098,
+      "stattest_name": "ks_2samp",
+      "pvalue": 0.02223393260283012
+    }
+  ],
+  "feature_stats": {
+    "person_age": {
+      "statistic": 0.04766666666666667,
+      "pvalue": 0.6534661788018815,
+      "drifted": 

@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-03-06T16:00:32.464028Z",
+  "submitted": 105,
+  "successful": 95,
+  "failed": 10,
+  "routes": {
+    "primary": 95
+  },
+  "canary_pct": 0.0,
+  "prometheus_canary_pct": null,
+  "errors_sample": [
+    {
+      "idx": 2,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 5,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 26,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 41,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 42,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 65,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 80,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 89,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 99,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 102,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    }
+  ],
+  "verdict": "FAIL"
+}

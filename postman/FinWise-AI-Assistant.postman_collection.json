@@ -1,0 +1,166 @@
+{
+  "info": {
+    "name": "FinWise AI Assistant API",
+    "description": "Postman collection for FinWise AI Risk endpoints (login + AI explanation + fairness summary + AI assistant).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "applicationId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1) Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "description": "Login and copy access_token to collection variable accessToken."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "let jsonData = {};",
+              "try {",
+              "  jsonData = pm.response.json();",
+              "} catch (e) {}",
+              "",
+              "if (jsonData.access_token) {",
+              "  pm.collectionVariables.set('accessToken', jsonData.access_token);",
+              "  console.log('accessToken variable set.');",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2) AI Risk Explanation",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"application_id\": {{applicationId}}\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v2/ai-risk-explanation",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v2",
+            "ai-risk-explanation"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3) Fairness Summary",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"approval_rates\": {\n    \"Q1\": 54.7,\n    \"Q2\": 60.1,\n    \"Q3\": 68.2,\n    \"Q4\": 74.3,\n    \"Q5\": 87.1\n  },\n  \"demographic_parity_difference\": 0.08,\n  \"equal_opportunity_difference\": 0.06\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v2/fairness-summary",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v2",
+            "fairness-summary"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4) AI Risk Assistant",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"application_id\": {{applicationId}},\n  \"question\": \"Why was this loan rejected?\",\n  \"fairness_context\": {\n    \"disparate_impact_ratio\": 0.79,\n    \"demographic_parity_difference\": 0.09,\n    \"equal_opportunity_difference\": 0.07\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v2/ai-risk-assistant",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v2",
+            "ai-risk-assistant"
+          ]
+        }
+      }
+    }
+  ]
+}

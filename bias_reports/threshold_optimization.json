@@ -1,0 +1,73 @@
+{
+  "threshold": 0.3,
+  "all_pass_80_rule": false,
+  "avg_di_ratio": 0.5132032560233595,
+  "approval_rate": 80.6732146511152,
+  "di_details": {
+    "age_group": {
+      "approval_rates": {
+        "26-35": 0.18536121673003803,
+        "36-45": 0.2046908315565032,
+        "46-55": 0.21637426900584794,
+        "56+": 0.23880597014925373
+      },
+      "disparate_impact_ratio": 0.7762000950570342,
+      "max_approval_rate": 0.23880597014925373,
+      "min_approval_rate": 0.18536121673003803,
+      "passes_80_percent_rule": false,
+      "risk_level": "MEDIUM"
+    },
+    "income_quintile": {
+      "approval_rates": {
+        "Q1 (Lowest)": 0.4216133942161339,
+        "Q2": 0.2232357177148344,
+        "Q3": 0.12360149174214172,
+        "Q4": 0.09794628751974724,
+        "Q5 (Highest)": 0.09002057613168725
+      },
+      "disparate_impact_ratio": 0.2135145072870705,
+      "max_approval_rate": 0.4216133942161339,
+      "min_approval_rate": 0.09002057613168725,
+      "passes_80_percent_rule": false,
+      "risk_level": "HIGH"
+    },
+    "employment_stability": {
+      "approval_rates": {
+        "Mid (4-7y)": 0.18368136117556072,
+        "New (0-1y)": 0.25742574257425743,
+        "Junior (2-3y)": 0.20609233698238935,
+        "Senior (8+y)": 0.14106050305914344
+      },
+      "disparate_impact_ratio": 0.5479658003451341,
+      "max_approval_rate": 0.25742574257425743,
+      "min_approval_rate": 0.14106050305914344,
+      "passes_80_percent_rule": false,
+      "risk_level": "HIGH"
+    },
+    "home_ownership": {
+      "approval_rates": {
+        "RENT": 0.3182496270512183,
+        "OWN": 0.061274509803921566,
+        "MORTGAGE": 0.11265023426359748,
+        "OTHER": 0.2222222222222222
+      },
+      "disparate_impact_ratio": 0.1925359987745098,
+      "max_approval_rate": 0.3182496270512183,
+      "min_approval_rate": 0.061274509803921566,
+      "passes_80_percent_rule": false,
+      "risk_level": "HIGH"
+    },
+    "credit_history": {
+      "approval_rates": {
+        "Building (4-7y)": 0.18150470219435735,
+        "Established (8-15y)": 0.19514884233737598,
+        "Long (16+y)": 0.2171628721541156
+      },
+      "disparate_impact_ratio": 0.8357998786530487,
+      "max_approval_rate": 0.2171628721541156,
+      "min_approval_rate": 0.18150470219435735,
+      "passes_80_percent_rule": true,
+      "risk_level": "LOW"
+    }
+  }
+}

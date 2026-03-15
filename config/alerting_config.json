@@ -1,0 +1,35 @@
+{
+  "email": {
+    "enabled": false,
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "from_email": "your-email@gmail.com",
+    "to_emails": [
+      "data-science-team@company.com",
+      "model-risk@company.com"
+    ],
+    "password": "your-app-password"
+  },
+  "slack": {
+    "enabled": false,
+    "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+  },
+  "severity_thresholds": {
+    "low": ["log"],
+    "medium": ["log"],
+    "high": ["log", "email"],
+    "critical": ["log", "email"]
+  },
+  "performance_thresholds": {
+    "roc_auc_min": 0.85,
+    "recall_min": 0.80,
+    "precision_min": 0.75,
+    "max_degradation_percent": 5
+  },
+  "retraining_triggers": {
+    "performance_drop_threshold": 0.05,
+    "drift_features_threshold": 3,
+    "minimum_new_samples": 5000,
+    "auto_retrain": false
+  }
+}

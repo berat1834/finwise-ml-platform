@@ -1,0 +1,37 @@
+{
+  "model_id": "CUST-001_v1.0.3",
+  "customer_id": "CUST-001",
+  "version": "1.0.3",
+  "created_at": "2026-03-05 20:26:02.349480",
+  "training_date": "2026-03-05 20:26:02.349783",
+  "data_shape": [
+    1000,
+    8
+  ],
+  "feature_count": 8,
+  "train_auc": 0.9685956620054041,
+  "test_auc": 0.4883550380016889,
+  "train_recall": 0.8974358974358975,
+  "test_recall": 0.5298013245033113,
+  "precision": 0.5063291139240507,
+  "f1_score_val": 0.517799352750809,
+  "training_samples": 700,
+  "test_samples": 300,
+  "class_distribution": {
+    "class_0": 349,
+    "class_1": 351
+  },
+  "feature_importance": {
+    "loan_int_rate": 0.8151428015930258,
+    "loan_intent_PERSONAL": 0.030271875797788547,
+    "person_home_ownership_RENT": 0.029869956264092484,
+    "loan_intent_MEDICAL": 0.02838180035593175,
+    "loan_grade_C": 0.027700481261789537,
+    "person_home_ownership_OWN": 0.02659850227932821,
+    "loan_grade_D": 0.023074524498006514,
+    "loan_grade_B": 0.01896005795003726
+  },
+  "is_production": false,
+  "is_validated": false,
+  "validation_date": null
+}

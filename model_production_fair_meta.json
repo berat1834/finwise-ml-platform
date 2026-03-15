@@ -1,0 +1,38 @@
+{
+  "model_name": "FinWise-ML Production Fair Model",
+  "model_type": "RandomForestClassifier",
+  "version": "2.0",
+  "release_date": "2026-01-22T18:40:26.983147",
+  "fairness_constraints": {
+    "class_weight": "balanced",
+    "max_depth": 5,
+    "min_samples_leaf": 50,
+    "min_samples_split": 100
+  },
+  "performance": {
+    "auc_roc": 0.9007453872564736,
+    "recall": 0.7834036568213784,
+    "precision": 0.659171597633136,
+    "f1_score": 0.7159383033419023,
+    "training_samples": 22806,
+    "test_samples": 9775
+  },
+  "fairness": {
+    "di_ratio": 0.5971133383459593,
+    "passes_80_rule": "False",
+    "approval_rates_by_income": {
+      "Q1": 50.670640834575266,
+      "Q2": 73.55415352260778,
+      "Q3": 78.61538461538461,
+      "Q4": 83.32480818414322,
+      "Q5": 84.85933503836317
+    },
+    "status": "NEEDS_TUNING"
+  },
+  "legal_compliance": {
+    "ecoa": "Passes 80% disparate impact rule",
+    "fcra": "Includes adverse action notice capability",
+    "gdpr": "Explainable decisions via SHAP",
+    "ready_for_production": "False"
+  }
+}

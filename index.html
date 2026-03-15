@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kredi Başvuru Sistemi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result-approved {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+        
+        .result-rejected {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+        
+        .result-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .result-approved .result-title {
+            color: #28a745;
+        }
+        
+        .result-rejected .result-title {
+            color: #dc3545;
+        }
+        
+        .result-details {
+            font-size: 1em;
+            line-height: 1.8;
+        }
+        
+        .probability-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .probability-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            transition: width 1s ease;
+        }
+        
+        .info-text {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Basit Auth Çubuğu (JWT için) -->
+        <div id="authBar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;">
+            <div id="authStatus">🔒 Oturum: Misafir</div>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <input id="authUser" type="text" placeholder="kullanıcı" style="padding:6px 8px;border-radius:6px;border:1px solid #ddd;">
+                <input id="authPass" type="password" placeholder="şifre" style="padding:6px 8px;border-radius:6px;border:1px solid #ddd;">
+                <button id="btnLogin" class="btn-submit" type="button" style="padding:8px 12px;">Giriş</button>
+                <button id="btnLogout" class="btn-submit" type="button" style="padding:8px 12px;background:#6c757d">Çıkış</button>
+            </div>
+        </div>
+        <div class="header">
+            <h1>🏦 Kredi Başvuru Sistemi</h1>
+            <p>Kredi başvurunuzu anında değerlendirin</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="info-text">
+                📋 Lütfen aşağıdaki bilgileri eksiksiz doldurun. Sistemimiz yapay zeka kullanarak kredi başvurunuzu anında değerlendirecektir.
+            </div>
+            
+            <form id="creditForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age">Yaş</label>
+                        <input type="number" id="age" name="age" required min="18" max="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="income">Yıllık Gelir ($)</label>
+                        <input type="number" id="income" name="income" required min="0" step="1000">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="emp_length">İş Deneyimi (Yıl)</label>
+                        <input type="number" id="emp_length" name="emp_length" required min="0" max="50" step="0.5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loan_amnt">Talep Edilen Kredi ($)</label>
+                        <input type="number" id="loan_amnt" name="loan_amnt" required min="500" step="500">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="loan_int_rate">Faiz Oranı (%)</label>
+                        <input type="number" id="loan_int_rate" name="loan_int_rate" required min="0" max="30" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cred_hist_length">Kredi Geçmişi (Yıl)</label>
+                        <input type="number" id="cred_hist_length" name="cred_hist_length" required min="0" max="50" step="0.5">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="home_ownership">Ev Durumu</label>
+                        <select id="home_ownership" name="home_ownership" required>
+                            <option value="">Seçiniz...</option>
+                            <option value="RENT">Kiracı</option>
+                            <option value="OWN">Ev Sahibi</option>
+                            <option value="MORTGAGE">İpotekli</option>
+                            <option value="OTHER">Diğer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loan_intent">Kredi Amacı</label>
+                        <select id="loan_intent" name="loan_intent" required>
+                            <option value="">Seçiniz...</option>
+                            <option value="PERSONAL">Kişisel</option>
+                            <option value="EDUCATION">Eğitim</option>
+                            <option value="MEDICAL">Sağlık</option>
+                            <option value="VENTURE">İş Kurma</option>
+                            <option value="HOMEIMPROVEMENT">Ev Geliştirme</option>
+                            <option value="DEBTCONSOLIDATION">Borç Birleştirme</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="loan_grade">Kredi Notu</label>
+                        <select id="loan_grade" name="loan_grade" required>
+                            <option value="">Seçiniz...</option>
+                            <option value="A">A (En İyi)</option>
+                            <option value="B">B (Çok İyi)</option>
+                            <option value="C">C (İyi)</option>
+                            <option value="D">D (Orta)</option>
+                            <option value="E">E (Düşük)</option>
+                            <option value="F">F (Çok Düşük)</option>
+                            <option value="G">G (En Düşük)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="default_on_file">Geçmiş Ödeme Temerrüdü</label>
+                        <select id="default_on_file" name="default_on_file" required>
+                            <option value="">Seçiniz...</option>
+                            <option value="N">Hayır</option>
+                            <option value="Y">Evet</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">🔍 Başvuruyu Değerlendir</button>
+            </form>
+            
+            <div id="resultContainer" class="result-container">
+                <div class="result-title" id="resultTitle"></div>
+                <div class="probability-bar">
+                    <div class="probability-fill" id="probabilityBar"></div>
+                </div>
+                <div class="result-details" id="resultDetails"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ----- Basit JWT Yardımcıları -----
+        function getToken() { return localStorage.getItem('jwt_token'); }
+        function setToken(t) { localStorage.setItem('jwt_token', t); }
+        function clearToken() { localStorage.removeItem('jwt_token'); }
+
+        function refreshAuthUI() {
+            const token = getToken();
+            const status = document.getElementById('authStatus');
+            if (token) {
+                status.textContent = '🔓 Oturum: Giriş yapıldı';
+            } else {
+                status.textContent = '🔒 Oturum: Misafir';
+            }
+        }
+
+        async function login(username, password) {
+            try {
+                const res = await fetch('http://localhost:5000/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (!res.ok) {
+                    throw new Error('Login başarısız');
+                }
+                const data = await res.json();
+                if (data && (data.access_token || data.token)) {
+                    setToken(data.access_token || data.token);
+                    refreshAuthUI();
+                    return true;
+                }
+                throw new Error('Token alınamadı');
+            } catch (err) {
+                console.error('Login error:', err);
+                alert('Giriş yapılamadı. Kullanıcı/şifreyi kontrol edin veya güvenli API çalışıyor mu bakın (app_v2_secure.py).');
+                return false;
+            }
+        }
+
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            const u = document.getElementById('authUser').value || 'admin';
+            const p = document.getElementById('authPass').value || 'admin123';
+            await login(u, p);
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            clearToken();
+            refreshAuthUI();
+        });
+
+        refreshAuthUI();
+
+        document.getElementById('creditForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Form verilerini topla
+            const formData = {
+                person_age: parseInt(document.getElementById('age').value),
+                person_income: parseFloat(document.getElementById('income').value),
+                person_emp_length: parseFloat(document.getElementById('emp_length').value),
+                loan_amnt: parseFloat(document.getElementById('loan_amnt').value),
+                loan_int_rate: parseFloat(document.getElementById('loan_int_rate').value),
+                cb_person_cred_hist_length: parseFloat(document.getElementById('cred_hist_length').value),
+                person_home_ownership: document.getElementById('home_ownership').value,
+                loan_intent: document.getElementById('loan_intent').value,
+                loan_grade: document.getElementById('loan_grade').value,
+                cb_person_default_on_file: document.getElementById('default_on_file').value
+            };
+            
+            // Kredi/gelir oranını hesapla
+            formData.loan_percent_income = formData.loan_amnt / formData.person_income;
+            
+            // API'ye gönder (Flask backend gerekli)
+            try {
+                const headers = { 'Content-Type': 'application/json' };
+                const token = getToken();
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+                const response = await fetch('http://localhost:5000/degerlendir', {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                if (!response.ok) {
+                    // JWT gerekiyorsa ve yoksa kullanıcıyı uyar
+                    if (response.status === 401) {
+                        alert('Bu işlem için giriş (JWT) gerekli. Üstteki formdan giriş yapın.');
+                        return;
+                    }
+                }
+                
+                // Sonuçları göster
+                const resultContainer = document.getElementById('resultContainer');
+                const resultTitle = document.getElementById('resultTitle');
+                const resultDetails = document.getElementById('resultDetails');
+                const probabilityBar = document.getElementById('probabilityBar');
+                
+                resultContainer.style.display = 'block';
+                
+                if (result.tahmin === 'ONAYLANDI') {
+                    resultContainer.className = 'result-container result-approved';
+                    resultTitle.textContent = '✅ KREDİNİZ ONAYLANDI!';
+                    resultDetails.innerHTML = `
+                        <p><strong>Tebrikler!</strong> Kredi başvurunuz onaylanmıştır.</p>
+                        <p><strong>Onay Olasılığı:</strong> %${result.onay_olasiligi.toFixed(2)}</p>
+                        <p><strong>Risk Seviyesi:</strong> Düşük</p>
+                        <p>Kredi sözleşmeniz hazırlanacak ve en kısa sürede tarafınıza iletilecektir.</p>
+                    `;
+                    probabilityBar.style.width = `${result.onay_olasiligi}%`;
+                    probabilityBar.textContent = `%${result.onay_olasiligi.toFixed(1)}`;
+                } else {
+                    resultContainer.className = 'result-container result-rejected';
+                    resultTitle.textContent = '❌ KREDİNİZ REDDEDİLDİ';
+                    resultDetails.innerHTML = `
+                        <p><strong>Üzgünüz,</strong> mevcut kredi başvurunuz onaylanamamıştır.</p>
+                        <p><strong>Red Olasılığı:</strong> %${result.red_olasiligi.toFixed(2)}</p>
+                        <p><strong>Risk Seviyesi:</strong> Yüksek</p>
+                        <p>Kredi başvurunuzu farklı koşullarla yenileyebilir veya müşteri hizmetlerimizle iletişime geçebilirsiniz.</p>
+                    `;
+                    probabilityBar.style.background = 'linear-gradient(90deg, #dc3545 0%, #c82333 100%)';
+                    probabilityBar.style.width = `${result.red_olasiligi}%`;
+                    probabilityBar.textContent = `%${result.red_olasiligi.toFixed(1)}`;
+                }
+                
+                // Sonuca scroll
+                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+            } catch (error) {
+                alert('Bağlantı hatası! Lütfen backend sunucusunun çalıştığından emin olun.\n\nKomut: python start.py');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

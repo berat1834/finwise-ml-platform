@@ -1,0 +1,120 @@
+groups:
+  - name: model_alerts
+    interval: 30s
+    rules:
+      - alert: CanaryModelNotLoaded
+        expr: finwise_model_routing_mode{mode="canary"} == 1 and finwise_canary_model_loaded == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Canary mode active but canary model not loaded"
+          description: "Routing has fallen back to primary model; fix CANARY_MODEL_PATH/CANARY_MODEL_META_PATH or set MODEL_ROUTING_MODE=single."
+
+      - alert: CanaryFallbackTrafficDetected
+        expr: increase(finwise_model_route_total{route="fallback_primary_served"}[10m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Fallback traffic detected in canary rollout"
+          description: "Requests intended for canary were served by primary fallback in the last 10 minutes."
+
+      - alert: HighRejectionRate
+        expr: finwise_rejection_rate > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High loan rejection rate detected"
+          description: "Rejection rate is {{ $value | humanizePercentage }} for 5 minutes"
+
+      - alert: DataDrift
+        expr: model_dataset_drift > 0.3
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Data drift detected"
+          description: "Dataset drift score is {{ $value }}"
+
+      - alert: ModelLatencyHigh
+        expr: histogram_quantile(0.95, sum(rate(model_prediction_latency_seconds_bucket[5m])) by (le)) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High model prediction latency"
+          description: "95th percentile latency is {{ $value }}s"
+
+  - name: fairness_alerts
+    interval: 30s
+    rules:
+      - alert: LowDisparateImpact
+        expr: finwise_fairness_di_ratio >= 0 and finwise_fairness_di_ratio < 0.80
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DI < 0.80"
+          description: "Disparate impact ratio below legal target. Trigger manual review and freeze scale-up."
+
+      - alert: VeryLowDisparateImpact
+        expr: finwise_fairness_di_ratio >= 0 and finwise_fairness_di_ratio < 0.75
+        for: 2m
+        labels:
+          severity: urgent
+        annotations:
+          summary: "DI < 0.75"
+          description: "Urgent fairness breach. Stop automations and apply rollback playbook."
+
+  - name: api_alerts
+    interval: 30s
+    rules:
+      - alert: APIDown
+        expr: up{job="credit-risk-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "API is down"
+          description: "Credit Risk API has been down for 2 minutes"
+
+      - alert: MetricsEndpointDown
+        expr: up{job="credit-risk-api-local", instance="host.docker.internal:5000"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Local API metrics target is down"
+          description: "Prometheus cannot scrape http://host.docker.internal:5000/metrics"
+
+  - name: resource_alerts
+    interval: 30s
+    rules:
+      - alert: HighCPUUsage
+        expr: system_cpu_usage_percent > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}%"
+
+      - alert: HighMemoryUsage
+        expr: system_memory_usage_percent > 85
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}%"
+
+      - alert: DiskSpaceLow
+        expr: system_disk_usage_percent > 90
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space critically low"
+          description: "Disk usage is {{ $value }}%"

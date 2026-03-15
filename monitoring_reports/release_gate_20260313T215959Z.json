@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-03-13T21:59:59.170325+00:00",
+  "pipeline": {
+    "csv_path": "credit_risk_dataset.csv",
+    "fairness_strategy": "class_weight",
+    "threshold_strategy": "f2",
+    "min_precision": 0.75
+  },
+  "performance": {
+    "roc_auc": 0.8697371599248596,
+    "accuracy": 0.7561761546723953,
+    "recall_class_1": 0.8037974683544303,
+    "f1_class_1": 0.5899354838709677,
+    "pr_auc": 0.7788733283001082
+  },
+  "fairness": {
+    "status": "NEEDS_IMPROVEMENT",
+    "dataset_path": "credit_risk_dataset.csv",
+    "holdout_size": 0.2,
+    "holdout_samples": 6517,
+    "baseline_model_path": "production_model.joblib",
+    "candidate_model_path": "model_production_optimal.joblib",
+    "baseline_di_ratio": 0.6835274375618932,
+    "candidate_di_ratio": 0.6592103427109061,
+    "passes_80_rule": false,
+    "relative_change_percent": -3.5575886957405705,
+    "approval_rates_baseline": {
+      "Q1": 67.618332081142,
+      "Q2": 84.68052347959969,
+      "Q3": 89.17682926829268,
+      "Q4": 93.00314465408806,
+      "Q5": 98.92555640828856
+    },
+    "approval_rates_candidate": {
+      "Q1": 55.29676934635612,
+      "Q2": 72.74826789838336,
+      "Q3": 78.27743902439023,
+      "Q4": 81.44654088050315,
+      "Q5": 83.88334612432847
+    }
+  },
+  "governance": {
+    "passed": true,
+    "exit_code": 0
+  },
+  "fairness_script": {
+    "exit_code": 0
+  },
+  "decision": {
+    "status": "NO_GO",
+    "checks": {
+      "min_roc_auc": true,
+      "min_recall_class_1": true,
+      "min_f1_class_1": true,
+      "min_di_ratio": false,
+      "governance_pass": true
+    },
+    "failed_checks": [
+      "min_di_ratio"
+    ],
+    "thresholds": {
+      "min_roc_auc": 0.86,
+      "min_recall_class_1": 0.75,
+      "min_f1_class_1": 0.58,
+      "min_di_ratio": 0.8
+    }
+  }
+}

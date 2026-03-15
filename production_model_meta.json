@@ -1,0 +1,78 @@
+{
+  "created_at": "2026-03-13T22:19:57.756488Z",
+  "version": "20260313221957",
+  "model": "RandomForestClassifier",
+  "threshold": 0.49999999999999983,
+  "categorical_cols": [
+    "person_home_ownership",
+    "loan_intent",
+    "cb_person_default_on_file"
+  ],
+  "numeric_cols": [
+    "person_age",
+    "person_income",
+    "person_emp_length",
+    "loan_amnt",
+    "loan_percent_income",
+    "cb_person_cred_hist_length"
+  ],
+  "metrics": {
+    "accuracy": 0.7561761546723953,
+    "roc_auc": 0.8697371599248596,
+    "pr_auc": 0.7788733283001082,
+    "confusion_matrix": [
+      [
+        3785,
+        1310
+      ],
+      [
+        279,
+        1143
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.9313484251968503,
+        "recall": 0.7428851815505397,
+        "f1-score": 0.8265094442624741,
+        "support": 5095.0
+      },
+      "1": {
+        "precision": 0.4659600489196902,
+        "recall": 0.8037974683544303,
+        "f1-score": 0.5899354838709677,
+        "support": 1422.0
+      },
+      "accuracy": 0.7561761546723953,
+      "macro avg": {
+        "precision": 0.6986542370582702,
+        "recall": 0.773341324952485,
+        "f1-score": 0.708222464066721,
+        "support": 6517.0
+      },
+      "weighted avg": {
+        "precision": 0.8298013527607414,
+        "recall": 0.7561761546723953,
+        "f1-score": 0.7748893473349427,
+        "support": 6517.0
+      }
+    }
+  },
+  "sklearn_version": "1.6.1",
+  "fairness_strategy": "class_weight",
+  "threshold_strategy": "f2",
+  "split_policy": {
+    "method": "stratified_train_val_test",
+    "train_fraction": 0.64,
+    "validation_fraction": 0.16,
+    "test_fraction": 0.2,
+    "random_state": 42
+  },
+  "sample_counts": {
+    "total": 32581,
+    "train": 20851,
+    "validation": 5213,
+    "test": 6517
+  },
+  "leakage_safe_threshold_selection": true
+}

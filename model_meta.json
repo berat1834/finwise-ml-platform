@@ -1,0 +1,62 @@
+{
+  "created_at": "2026-03-11T17:57:13.424494Z",
+  "version": "20260311175713",
+  "model": "RandomForestClassifier",
+  "threshold": 0.5157028685371297,
+  "categorical_cols": [
+    "person_home_ownership",
+    "loan_intent",
+    "cb_person_default_on_file"
+  ],
+  "numeric_cols": [
+    "person_age",
+    "person_income",
+    "person_emp_length",
+    "loan_amnt",
+    "loan_percent_income",
+    "cb_person_cred_hist_length"
+  ],
+  "metrics": {
+    "accuracy": 0.8747890133497008,
+    "roc_auc": 0.8718746074927985,
+    "pr_auc": 0.7815595223549896,
+    "confusion_matrix": [
+      [
+        4810,
+        285
+      ],
+      [
+        531,
+        891
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.9005804156524996,
+        "recall": 0.9440628066732091,
+        "f1-score": 0.9218091222690686,
+        "support": 5095.0
+      },
+      "1": {
+        "precision": 0.7576530612244898,
+        "recall": 0.6265822784810127,
+        "f1-score": 0.6859122401847575,
+        "support": 1422.0
+      },
+      "accuracy": 0.8747890133497008,
+      "macro avg": {
+        "precision": 0.8291167384384948,
+        "recall": 0.7853225425771109,
+        "f1-score": 0.8038606812269131,
+        "support": 6517.0
+      },
+      "weighted avg": {
+        "precision": 0.8693938730720747,
+        "recall": 0.8747890133497008,
+        "f1-score": 0.870336762851562,
+        "support": 6517.0
+      }
+    }
+  },
+  "sklearn_version": "1.6.1"
+}

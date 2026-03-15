@@ -1,0 +1,119 @@
+{
+  "timestamp": "2025-11-28T00:40:30.490485",
+  "dataset_drift": true,
+  "drift_share": 0.8181818181818182,
+  "number_of_drifted_columns": 9,
+  "drifted_features": [
+    {
+      "feature": "person_age",
+      "drift_score": 0.117,
+      "stattest_name": "ks_2samp",
+      "pvalue": 0.0033127460945071296
+    },
+    {
+      "feature": "person_income",
+      "drift_score": 0.31666666666666665,
+      "stattest_name": "ks_2samp",
+      "pvalue": 5.576711038725727e-21
+    },
+    {
+      "feature": "person_emp_length",
+      "drift_score": 0.10433333333333333,
+      "stattest_name": "ks_2samp",
+      "pvalue": 0.01223698211760736
+    },
+    {
+      "feature": "loan_amnt",
+      "drift_score": 0.15266666666666667,
+      "stattest_name": "ks_2samp",
+      "pvalue": 3.724080955797738e-05
+    },
+    {
+      "feature": "loan_int_rate",
+      "drift_score": 0.17633333333333334,
+      "stattest_name": "ks_2samp",
+      "pvalue": 9.758909470857783e-07
+    },
+    {
+      "feature": "loan_percent_income",
+      "drift_score": 0.14366666666666666,
+      "stattest_name": "ks_2samp",
+      "pvalue": 0.00012940535534853825
+    },
+    {
+      "feature": "cb_person_cred_hist_length",
+      "drift_score": 0.181,
+      "stattest_name": "ks_2samp",
+      "pvalue": 4.468752101859531e-07
+    },
+    {
+      "feature": "loan_grade",
+      "drift_score": 25.674274726937327,
+      "stattest_name": "chi2_contingency",
+      "pvalue": 0.00025599232236332665
+    },
+    {
+      "feature": "cb_person_default_on_file",
+      "drift_score": 7.71688745080538,
+      "stattest_name": "chi2_contingency",
+      "pvalue": 0.005470663358773527
+    }
+  ],
+  "feature_stats": {
+    "person_age": {
+      "statistic": 0.117,
+      "pvalue": 0.0033127460945071296,
+      "drifted": true
+    },
+    "person_income": {
+      "statistic": 0.31666666666666665,
+      "pvalue": 5.576711038725727e-21,
+      "drifted": true
+    },
+    "person_emp_length": {
+      "statistic": 0.10433333333333333,
+      "pvalue": 0.01223698211760736,
+      "drifted": true
+    },
+    "loan_amnt": {
+      "statistic": 0.15266666666666667,
+      "pvalue": 3.724080955797738e-05,
+      "drifted": true
+    },
+    "loan_int_rate": {
+      "statistic": 0.17633333333333334,
+      "pvalue": 9.758909470857783e-07,
+      "drifted": true
+    },
+    "loan_percent_income": {
+      "statistic": 0.14366666666666666,
+      "pvalue": 0.00012940535534853825,
+      "drifted": true
+    },
+    "cb_person_cred_hist_length": {
+      "statistic": 0.181,
+      "pvalue": 4.468752101859531e-07,
+      "drifted": true
+    },
+    "person_home_ownership": {
+      "statistic": 5.022586763008221,
+      "pvalue": 0.1701506821940208,
+      "drifted": false
+    },
+    "loan_intent": {
+      "statistic": 2.782672050283491,
+      "pvalue": 0.7334479605173159,
+      "drifted": false
+    },
+    "loan_grade": {
+      "statistic": 25.674274726937327,
+      "pvalue": 0.00025599232236332665,
+      "drifted": true
+    },
+    "cb_person_default_on_file": {
+      "statistic": 7.71688745080538,
+      "pvalue": 0.005470663358773527,
+      "drifted": true
+    }
+  }
+}

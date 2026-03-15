@@ -1,0 +1,30 @@
+{
+  "threshold": 0.49999999999999983,
+  "candidate_di_ratio": 0.5849607182940516,
+  "candidate_recall": 0.6350210970464135,
+  "candidate_f1": 0.68202416918429,
+  "approval_rates_candidate": {
+    "Q1": 54.54545454545454,
+    "Q2": 82.67898383371825,
+    "Q3": 86.66158536585365,
+    "Q4": 89.54402515723271,
+    "Q5": 93.24635456638526
+  },
+  "selection_score": -0.06761638892440591,
+  "di_gap": 0.21503928170594844,
+  "recall_gap": 0.11497890295358648,
+  "f1_gap": 0.0,
+  "baseline_di_ratio": 0.5849607182940516,
+  "approval_rates_baseline": {
+    "Q1": 54.54545454545454,
+    "Q2": 82.67898383371825,
+    "Q3": 86.66158536585365,
+    "Q4": 89.54402515723271,
+    "Q5": 93.24635456638526
+  },
+  "passes_80_rule": false,
+  "status": "NEEDS_IMPROVEMENT",
+  "selection_reason": "highest_di_with_soft_performance_floors",
+  "holdout_samples": 6517,
+  "holdout_size": 0.2
+}

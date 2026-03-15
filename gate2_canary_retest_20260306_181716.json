@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-03-06T15:17:16.990130Z",
+  "submitted": 150,
+  "successful": 17,
+  "failed": 133,
+  "routes": {
+    "primary": 17
+  },
+  "canary_pct": 0.0,
+  "prometheus_canary_pct": 0.0,
+  "errors_sample": [
+    {
+      "idx": 3,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 10,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 14,
+      "status": 500,
+      "body": "{\"error\":\"Evaluation failed\",\"detail\":\"The feature names should match those that were passed during fit.\\nFeature names unseen at fit time:\\n- cb_person_default"
+    },
+    {
+      "idx": 20,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    },
+    {
+      "idx": 21,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    },
+    {
+      "idx": 22,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    },
+    {
+      "idx": 23,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    },
+    {
+      "idx": 24,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    },
+    {
+      "idx": 25,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    },
+    {
+      "idx": 26,
+      "status": 429,
+      "body": "{\"message\":\"20 per 1 minute\"}\n"
+    }
+  ],
+  "verdict": "FAIL"
+}

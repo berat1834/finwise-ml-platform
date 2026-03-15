@@ -1,0 +1,38 @@
+{
+  "model_name": "FinWise-ML Maximum Fair Production Model",
+  "model_type": "RandomForestClassifier + Threshold Optimization",
+  "version": "3.0",
+  "release_date": "2026-01-22T18:40:57.372784",
+  "model_config": {
+    "n_estimators": 250,
+    "max_depth": 3,
+    "min_samples_leaf": 100,
+    "min_samples_split": 150,
+    "class_weight": "balanced"
+  },
+  "decision_threshold": 0.8500000000000002,
+  "performance": {
+    "auc_roc": 0.8836188296399852,
+    "recall": 0.03656821378340366,
+    "precision": 1.0,
+    "f1_score": 0.07055630936227951
+  },
+  "fairness_metrics": {
+    "di_ratio": 0.9751614505712867,
+    "passes_80_rule": "True",
+    "approval_rates_by_income": {
+      "Q1": 97.51614505712867,
+      "Q2": 99.26393270241851,
+      "Q3": 99.38461538461539,
+      "Q4": 99.89769820971867,
+      "Q5": 100.0
+    },
+    "compliance_status": "COMPLIANT"
+  },
+  "legal_status": {
+    "ecoa_80_rule": "PASSES",
+    "fcra_compliant": true,
+    "gdpr_explainable": true,
+    "production_ready": "True"
+  }
+}

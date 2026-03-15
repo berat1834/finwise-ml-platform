@@ -1,0 +1,16 @@
+{
+  "model_type": "RandomForest",
+  "n_estimators": 150,
+  "max_depth": 8,
+  "class_weight": "balanced",
+  "fairness_constraint": "Balanced class weights to mitigate bias",
+  "training_date": "2026-01-22T18:37:37.651437",
+  "training_samples": 22806,
+  "test_samples": 9775,
+  "performance": {
+    "auc": 0.9197764396499568,
+    "recall": 0.7773089545241444,
+    "precision": 0.7326557666813964,
+    "f1": 0.7543221110100091
+  }
+}

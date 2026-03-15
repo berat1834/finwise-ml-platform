@@ -1,0 +1,35 @@
+{
+  "model_version": "4.0-PROD",
+  "deployment_date": "2026-03-05T20:50:36.397331+00:00",
+  "fairness_thresholds": {
+    "min_disparate_impact_ratio": 0.8,
+    "alert_threshold_ratio": 0.85,
+    "min_approval_q1_percent": 3.0,
+    "min_approval_q1_absolute": 0.5,
+    "audit_sample_size": 500,
+    "audit_frequency_days": 30
+  },
+  "monitoring_enabled": true,
+  "last_audit": "2026-03-05T20:50:36.398417+00:00",
+  "audit_history": [
+    {
+      "check_date": "2026-03-05T20:50:36.398417+00:00",
+      "note": "OUTDATED - Old synthetic test data",
+      "approval_rates": {
+        "Q1": 0.0,
+        "Q2": 5.36,
+        "Q3": 7.79,
+        "Q4": 7.67,
+        "Q5": 11.0
+      },
+      "disparate_impact_ratio": 0.0,
+      "q1_rate": 0.0,
+      "q5_rate": 11.0,
+      "q1_vs_q5_ratio": 0.0,
+      "passes_80_rule": false,
+      "alert_triggered": true,
+      "alert_reason": "[HISTORICAL TEST DATA] Q1/Q5 ratio 0.00% < 85%; Q1 approval 0.0% < minimum 3.0%",
+      "recommendation": "Current production DI Ratio: 0.628. See FAIRNESS_REMEDIATION_PROGRESS.md"
+    }
+  ]
+}

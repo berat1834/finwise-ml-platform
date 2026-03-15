@@ -1,0 +1,2 @@
+date,total_applications,q1_approval,q2_approval,q3_approval,q4_approval,q5_approval,di_ratio,tpr_q1,tpr_q5,fpr_q1,fpr_q5,note
+2026-03-06,148,0.0,0.0,0.0,2.56,76.47,0.0,,,,,TPR/FPR unavailable without ground-truth repayment labels.

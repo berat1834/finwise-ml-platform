@@ -1,0 +1,264 @@
+{
+  "generated_at": "2026-03-13T22:10:39.290190+00:00",
+  "pipeline": {
+    "csv_path": "credit_risk_dataset.csv",
+    "auto_fairness_search": true,
+    "max_attempts": 3,
+    "selected_attempt": 3,
+    "holdout_size": 0.2,
+    "policy_threshold": {
+      "min": 0.2,
+      "max": 0.9,
+      "step": 0.02
+    }
+  },
+  "performance": {
+    "roc_auc": 0.8697371599248596,
+    "accuracy": 0.8634340954426883,
+    "recall_class_1": 0.6476793248945147,
+    "f1_class_1": 0.6742313323572474,
+    "pr_auc": 0.7788733283001082
+  },
+  "fairness": {
+    "threshold": 0.8999999999999997,
+    "candidate_di_ratio": 0.7771461596254985,
+    "candidate_recall": 0.3720112517580872,
+    "candidate_f1": 0.5422860071758073,
+    "approval_rates_candidate": {
+      "Q1": 77.53568745304283,
+      "Q2": 90.91608929946112,
+      "Q3": 94.51219512195121,
+      "Q4": 97.09119496855347,
+      "Q5": 99.7697620874904
+    },
+    "baseline_di_ratio": 0.5849607182940516,
+    "approval_rates_baseline": {
+      "Q1": 54.54545454545454,
+      "Q2": 82.67898383371825,
+      "Q3": 86.66158536585365,
+      "Q4": 89.54402515723271,
+      "Q5": 93.24635456638526
+    },
+    "passes_80_rule": false,
+    "status": "NEEDS_IMPROVEMENT",
+    "holdout_samples": 6517,
+    "holdout_size": 0.2
+  },
+  "governance": {
+    "passed": true,
+    "exit_code": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "config": {
+        "fairness_strategy": "class_weight",
+        "threshold_strategy": "f2",
+        "min_precision": 0.75
+      },
+      "performance": {
+        "roc_auc": 0.8697371599248596,
+        "accuracy": 0.7561761546723953,
+        "recall_class_1": 0.8037974683544303,
+        "f1_class_1": 0.5899354838709677,
+        "pr_auc": 0.7788733283001082
+      },
+      "fairness": {
+        "threshold": 0.8999999999999997,
+        "candidate_di_ratio": 0.7771461596254985,
+        "candidate_recall": 0.3720112517580872,
+        "candidate_f1": 0.5422860071758073,
+        "approval_rates_candidate": {
+          "Q1": 77.53568745304283,
+          "Q2": 90.91608929946112,
+          "Q3": 94.51219512195121,
+          "Q4": 97.09119496855347,
+          "Q5": 99.7697620874904
+        },
+        "baseline_di_ratio": 0.5849607182940516,
+        "approval_rates_baseline": {
+          "Q1": 54.54545454545454,
+          "Q2": 82.67898383371825,
+          "Q3": 86.66158536585365,
+          "Q4": 89.54402515723271,
+          "Q5": 93.24635456638526
+        },
+        "passes_80_rule": false,
+        "status": "NEEDS_IMPROVEMENT",
+        "holdout_samples": 6517,
+        "holdout_size": 0.2
+      },
+      "governance": {
+        "passed": true,
+        "exit_code": 0
+      },
+      "decision": {
+        "status": "NO_GO",
+        "checks": {
+          "min_roc_auc": true,
+          "min_recall_class_1": true,
+          "min_f1_class_1": true,
+          "min_di_ratio": false,
+          "governance_pass": true
+        },
+        "failed_checks": [
+          "min_di_ratio"
+        ],
+        "thresholds": {
+          "min_roc_auc": 0.86,
+          "min_recall_class_1": 0.75,
+          "min_f1_class_1": 0.58,
+          "min_di_ratio": 0.8
+        }
+      }
+    },
+    {
+      "attempt": 2,
+      "config": {
+        "fairness_strategy": "class_weight",
+        "threshold_strategy": "f1",
+        "min_precision": 0.75
+      },
+      "performance": {
+        "roc_auc": 0.8697371599248596,
+        "accuracy": 0.8747890133497008,
+        "recall_class_1": 0.6251758087201125,
+        "f1_class_1": 0.6854279105628374,
+        "pr_auc": 0.7788733283001082
+      },
+      "fairness": {
+        "threshold": 0.8999999999999997,
+        "candidate_di_ratio": 0.7771461596254985,
+        "candidate_recall": 0.3720112517580872,
+        "candidate_f1": 0.5422860071758073,
+        "approval_rates_candidate": {
+          "Q1": 77.53568745304283,
+          "Q2": 90.91608929946112,
+          "Q3": 94.51219512195121,
+          "Q4": 97.09119496855347,
+          "Q5": 99.7697620874904
+        },
+        "baseline_di_ratio": 0.5849607182940516,
+        "approval_rates_baseline": {
+          "Q1": 54.54545454545454,
+          "Q2": 82.67898383371825,
+          "Q3": 86.66158536585365,
+          "Q4": 89.54402515723271,
+          "Q5": 93.24635456638526
+        },
+        "passes_80_rule": false,
+        "status": "NEEDS_IMPROVEMENT",
+        "holdout_samples": 6517,
+        "holdout_size": 0.2
+      },
+      "governance": {
+        "passed": true,
+        "exit_code": 0
+      },
+      "decision": {
+        "status": "NO_GO",
+        "checks": {
+          "min_roc_auc": true,
+          "min_recall_class_1": false,
+          "min_f1_class_1": true,
+          "min_di_ratio": false,
+          "governance_pass": true
+        },
+        "failed_checks": [
+          "min_recall_class_1",
+          "min_di_ratio"
+        ],
+        "thresholds": {
+          "min_roc_auc": 0.86,
+          "min_recall_class_1": 0.75,
+          "min_f1_class_1": 0.58,
+          "min_di_ratio": 0.8
+        }
+      }
+    },
+    {
+      "attempt": 3,
+      "config": {
+        "fairness_strategy": "threshold_tuning",
+        "threshold_strategy": "recall",
+        "min_precision": 0.7
+      },
+      "performance": {
+        "roc_auc": 0.8697371599248596,
+        "accuracy": 0.8634340954426883,
+        "recall_class_1": 0.6476793248945147,
+        "f1_class_1": 0.6742313323572474,
+        "pr_auc": 0.7788733283001082
+      },
+      "fairness": {
+        "threshold": 0.8999999999999997,
+        "candidate_di_ratio": 0.7771461596254985,
+        "candidate_recall": 0.3720112517580872,
+        "candidate_f1": 0.5422860071758073,
+        "approval_rates_candidate": {
+          "Q1": 77.53568745304283,
+          "Q2": 90.91608929946112,
+          "Q3": 94.51219512195121,
+          "Q4": 97.09119496855347,
+          "Q5": 99.7697620874904
+        },
+        "baseline_di_ratio": 0.5849607182940516,
+        "approval_rates_baseline": {
+          "Q1": 54.54545454545454,
+          "Q2": 82.67898383371825,
+          "Q3": 86.66158536585365,
+          "Q4": 89.54402515723271,
+          "Q5": 93.24635456638526
+        },
+        "passes_80_rule": false,
+        "status": "NEEDS_IMPROVEMENT",
+        "holdout_samples": 6517,
+        "holdout_size": 0.2
+      },
+      "governance": {
+        "passed": true,
+        "exit_code": 0
+      },
+      "decision": {
+        "status": "NO_GO",
+        "checks": {
+          "min_roc_auc": true,
+          "min_recall_class_1": false,
+          "min_f1_class_1": true,
+          "min_di_ratio": false,
+          "governance_pass": true
+        },
+        "failed_checks": [
+          "min_recall_class_1",
+          "min_di_ratio"
+        ],
+        "thresholds": {
+          "min_roc_auc": 0.86,
+          "min_recall_class_1": 0.75,
+          "min_f1_class_1": 0.58,
+          "min_di_ratio": 0.8
+        }
+      }
+    }
+  ],
+  "decision": {
+    "status": "NO_GO",
+    "checks": {
+      "min_roc_auc": true,
+      "min_recall_class_1": false,
+      "min_f1_class_1": true,
+      "min_di_ratio": false,
+      "governance_pass": true
+    },
+    "failed_checks": [
+      "min_recall_class_1",
+      "min_di_ratio"
+    ],
+    "thresholds": {
+      "min_roc_auc": 0.86,
+      "min_recall_class_1": 0.75,
+      "min_f1_class_1": 0.58,
+      "min_di_ratio": 0.8
+    }
+  }
+}

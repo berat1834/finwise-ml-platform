@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: credit-risk-system
+  labels:
+    name: credit-risk-system
+    environment: production

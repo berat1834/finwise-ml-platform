@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - Kredi Başvurusu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            color: #333;
+            font-weight: 700;
+        }
+        
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+        
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+        
+        .info-box {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-reset {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+        
+        .error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .result-card {
+            display: none;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4caf50;
+            margin-top: 20px;
+        }
+        
+        .result-card.rejected {
+            border-left-color: #d32f2f;
+        }
+        
+        .result-status {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .result-status.approved {
+            color: #4caf50;
+        }
+        
+        .result-status.rejected {
+            color: #d32f2f;
+        }
+        
+        .result-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .required {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 FinWise Kredi</h1>
+            <p>Hızlı, Güvenli ve Adil Kredi Başvurusu</p>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            ✓ Başvurunuz başarıyla gönderildi. Sonuçlar yükleniyor...
+        </div>
+        
+        <form id="applicationForm">
+            <!-- KİŞİSEL BİLGİLER -->
+            <h3 class="section-title">👤 Kişisel Bilgiler</h3>
+            
+            <div class="form-group">
+                <label for="fullName">Ad Soyad <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div class="error" id="fullNameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">E-Posta <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+                <div class="error" id="emailError"></div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Telefon Numarası</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+90 5XX XXX XXXX">
+                </div>
+                <div class="form-group">
+                    <label for="dob">Doğum Tarihi <span class="required">*</span></label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="nationalId">T.C. Kimlik No <span class="required">*</span></label>
+                <input type="text" id="nationalId" name="nationalId" placeholder="11 haneli" maxlength="11" required>
+                <div class="error" id="nationalIdError"></div>
+            </div>
+            
+            <!-- İŞ & GELİR BİLGİLERİ -->
+            <h3 class="section-title">💼 İş ve Gelir Bilgileri</h3>
+            
+            <div class="form-group">
+                <label for="employment">İstihdam Durumu <span class="required">*</span></label>
+                <select id="employment" name="employment" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="employed">Sabit İş</option>
+                    <option value="self_employed">Serbest Meslek</option>
+                    <option value="business">İşletme Sahibi</option>
+                    <option value="retired">Emekli</option>
+                    <option value="student">Öğrenci</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="annualIncome">Yıllık Gelir (₺) <span class="required">*</span></label>
+                <input type="number" id="annualIncome" name="annualIncome" placeholder="100000" required>
+                <div class="error" id="incomeError"></div>
+            </div>
+            
+            <!-- KREDİ BİLGİLERİ -->
+            <h3 class="section-title">🏦 Kredi Bilgileri</h3>
+            
+            <div class="info-box">
+                ℹ️ Lütfen ihtiyacınız olan tutarı ve vadesi girin. Faiz oranı başvurunuz onaylandıktan sonra belirtilecektir.
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="amount">Kredi Tutarı (₺) <span class="required">*</span></label>
+                    <input type="number" id="amount" name="amount" placeholder="10000" min="5000" max="500000" required>
+                    <div class="error" id="amountError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="term">Vade (Ay) <span class="required">*</span></label>
+                    <select id="term" name="term" required>
+                        <option value="">Seçiniz...</option>
+                        <option value="12">12 Ay</option>
+                        <option value="24">24 Ay</option>
+                        <option value="36">36 Ay</option>
+                        <option value="48">48 Ay</option>
+                        <option value="60">60 Ay</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="purpose">Kredi Amacı <span class="required">*</span></label>
+                <select id="purpose" name="purpose" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="home">Ev Alımı</option>
+                    <option value="car">Araç Alımı</option>
+                    <option value="education">Eğitim</option>
+                    <option value="business">İşletme</option>
+                    <option value="debt_consolidation">Borç Konsolidasyonu</option>
+                    <option value="other">Diğer</option>
+                </select>
+            </div>
+            
+            <!-- ÖDEME & AYLAR -->
+            <h3 class="section-title">📋 Ek Bilgiler</h3>
+            
+            <div class="form-group">
+                <label for="notes">Ek Açıklamalar</label>
+                <textarea id="notes" name="notes" placeholder="İstemeniz halinde ek bilgi yazabilirsiniz..."></textarea>
+            </div>
+            
+            <!-- BUTTONS -->
+            <div class="button-group">
+                <button type="reset" class="btn-reset">Temizle</button>
+                <button type="submit" class="btn-submit">Başvuruyu Gönder</button>
+            </div>
+            
+            <div class="loading" id="loading">
+                ⏳ Başvurunuz değerlendiriliyor, lütfen bekleyiniz...
+            </div>
+            
+            <div class="result-card" id="resultCard">
+                <div class="result-status" id="resultStatus"></div>
+                <div class="result-details" id="resultDetails"></div>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        const form = document.getElementById('applicationForm');
+        
+        // Validation functions
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        function validateNationalId(id) {
+            return /^\d{11}$/.test(id);
+        }
+        
+        function validateIncome(income) {
+            return income >= 0 && income <= 1000000000;
+        }
+        
+        function validateAmount(amount) {
+            return amount >= 5000 && amount <= 500000;
+        }
+        
+        function showError(fieldId, message) {
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.classList.add('show');
+            }
+        }
+        
+        function clearError(fieldId) {
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+            }
+        }
+        
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(err => err.classList.remove('show'));
+            
+            // Validate
+            let hasErrors = false;
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            if (!fullName || fullName.length < 3) {
+                showError('fullName', 'Ad soyad en az 3 karakter olmalıdır');
+                hasErrors = true;
+            }
+            
+            const email = document.getElementById('email').value.trim();
+            if (!validateEmail(email)) {
+                showError('email', 'Geçerli bir e-posta adresi giriniz');
+                hasErrors = true;
+            }
+            
+            const nationalId = document.getElementById('nationalId').value.trim();
+            if (!validateNationalId(nationalId)) {
+                showError('nationalId', 'T.C. Kimlik numarası 11 haneli olmalıdır');
+                hasErrors = true;
+            }
+            
+            const income = parseFloat(document.getElementById('annualIncome').value);
+            if (!validateIncome(income)) {
+                showError('income', 'Geçerli bir gelir tutarı giriniz');
+                hasErrors = true;
+            }
+            
+            const amount = parseFloat(document.getElementById('amount').value);
+            if (!validateAmount(amount)) {
+                showError('amount', 'Kredi tutarı 5.000 - 500.000 ₺ arasında olmalıdır');
+                hasErrors = true;
+            }
+            
+            if (hasErrors) return;
+            
+            // Prepare data
+            const applicationData = {
+                full_name: fullName,
+                email: email,
+                phone: document.getElementById('phone').value.trim(),
+                date_of_birth: document.getElementById('dob').value,
+                national_id: nationalId,
+                employment_status: document.getElementById('employment').value,
+                annual_income: income,
+                requested_amount: amount,
+                requested_term_months: parseInt(document.getElementById('term').value),
+                purpose: document.getElementById('purpose').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            
+            try {
+                // Call API
+                const response = await fetch('http://localhost:5000/api/v2/apply', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(applicationData)
+                });
+                
+                const result = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                if (response.ok) {
+                    // Success
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Show result
+                    const resultCard = document.getElementById('resultCard');
+                    const resultStatus = document.getElementById('resultStatus');
+                    const resultDetails = document.getElementById('resultDetails');
+                    
+                    if (result.decision === 'approved') {
+                        resultCard.classList.remove('rejected');
+                        resultStatus.className = 'result-status approved';
+                        resultStatus.textContent = '✓ BAŞVURUNUZ ONAYLANDI';
+                        resultDetails.innerHTML = `
+                            <p><strong>Kredi Tutarı:</strong> ₺${result.approved_amount.toLocaleString('tr-TR')}</p>
+                            <p><strong>Faiz Oranı:</strong> %${(result.approved_rate * 100).toFixed(2)}</p>
+                            <p><strong>Aylık Ödeme:</strong> ₺${result.monthly_payment.toLocaleString('tr-TR')}</p>
+                            <p><strong>Vade:</strong> ${result.approved_term_months} Ay</p>
+                            <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                                Başvuru No: ${result.application_id}<br>
+                                E-postanıza detaylı bilgi gönderilecektir.
+                            </p>
+                        `;
+                    } else {
+                        resultCard.classList.add('rejected');
+                        resultStatus.className = 'result-status rejected';
+                        resultStatus.textContent = '✗ BAŞVURUNUZ REDDEDİLDİ';
+                        resultDetails.innerHTML = `
+                            <p>${result.reason || 'Maalesef bu zamanda kredi başvurunuz onaylanamamıştır.'}</p>
+                            <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                                Farklı şartlarla yeni başvuru yapabilirsiniz.<br>
+                                Destek için: support@finwise.com.tr
+                            </p>
+                        `;
+                    }
+                    
+                    resultCard.style.display = 'block';
+                    form.style.opacity = '0.6';
+                    form.style.pointerEvents = 'none';
+                } else {
+                    alert('Hata: ' + (result.message || 'Bir hata oluştu'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').style.display = 'none';
+                alert('Bağlantı hatası: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

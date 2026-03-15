@@ -1,0 +1,1 @@
+Taşındı: Eski ana uygulama dosyası.

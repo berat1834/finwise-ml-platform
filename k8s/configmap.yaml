@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: credit-risk-config
+  namespace: credit-risk-system
+data:
+  FLASK_ENV: "production"
+  LOG_LEVEL: "INFO"
+  WORKERS: "4"
+  MODEL_PATH: "/app/model.joblib"
+  MODEL_META_PATH: "/app/model_meta.json"
+  ALLOWED_ORIGINS: "https://credit-risk.example.com"
+  REDIS_URL: "redis://redis-service:6379/0"
+  DATABASE_URL: "postgresql://postgres:changeme@postgres-service:5432/credit_risk_db"

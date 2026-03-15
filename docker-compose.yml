@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    container_name: credit-risk-api
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app_v2_secure.py
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - MODEL_PATH=/app/model.joblib
+      - MODEL_META_PATH=/app/model_meta.json
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=http://localhost:5000,http://127.0.0.1:5000
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    container_name: credit-risk-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=credit_risk_db
+      - POSTGRES_INITDB_ARGS=--auth-host=md5
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

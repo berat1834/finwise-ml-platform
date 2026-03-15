@@ -1,0 +1,215 @@
+{
+  "generated_at": "2026-03-13T22:17:42.733390+00:00",
+  "pipeline": {
+    "csv_path": "credit_risk_dataset.csv",
+    "auto_fairness_search": true,
+    "max_attempts": 2,
+    "selected_attempt": 2,
+    "holdout_size": 0.2,
+    "policy_threshold": {
+      "min": 0.2,
+      "max": 0.9,
+      "step": 0.02
+    }
+  },
+  "performance": {
+    "roc_auc": 0.8697371599248596,
+    "accuracy": 0.8747890133497008,
+    "recall_class_1": 0.6251758087201125,
+    "f1_class_1": 0.6854279105628374,
+    "pr_auc": 0.7788733283001082
+  },
+  "fairness": {
+    "threshold": 0.35999999999999993,
+    "candidate_di_ratio": 0.28044112345990374,
+    "candidate_recall": 0.7735583684950773,
+    "candidate_f1": 0.6099251455503188,
+    "approval_rates_candidate": {
+      "Q1": 24.492862509391436,
+      "Q2": 68.36027713625866,
+      "Q3": 71.41768292682927,
+      "Q4": 81.99685534591194,
+      "Q5": 87.33691481197236
+    },
+    "selection_score": -1.018456067890337,
+    "di_gap": 0.5195588765400962,
+    "recall_gap": 0.0,
+    "f1_gap": 0.0,
+    "baseline_di_ratio": 0.5849607182940516,
+    "approval_rates_baseline": {
+      "Q1": 54.54545454545454,
+      "Q2": 82.67898383371825,
+      "Q3": 86.66158536585365,
+      "Q4": 89.54402515723271,
+      "Q5": 93.24635456638526
+    },
+    "passes_80_rule": false,
+    "status": "NEEDS_IMPROVEMENT",
+    "selection_reason": "best_di_with_performance_floors",
+    "holdout_samples": 6517,
+    "holdout_size": 0.2
+  },
+  "governance": {
+    "passed": true,
+    "exit_code": 0
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "config": {
+        "fairness_strategy": "class_weight",
+        "threshold_strategy": "f2",
+        "min_precision": 0.75
+      },
+      "performance": {
+        "roc_auc": 0.8697371599248596,
+        "accuracy": 0.7561761546723953,
+        "recall_class_1": 0.8037974683544303,
+        "f1_class_1": 0.5899354838709677,
+        "pr_auc": 0.7788733283001082
+      },
+      "fairness": {
+        "threshold": 0.35999999999999993,
+        "candidate_di_ratio": 0.28044112345990374,
+        "candidate_recall": 0.7735583684950773,
+        "candidate_f1": 0.6099251455503188,
+        "approval_rates_candidate": {
+          "Q1": 24.492862509391436,
+          "Q2": 68.36027713625866,
+          "Q3": 71.41768292682927,
+          "Q4": 81.99685534591194,
+          "Q5": 87.33691481197236
+        },
+        "selection_score": -1.018456067890337,
+        "di_gap": 0.5195588765400962,
+        "recall_gap": 0.0,
+        "f1_gap": 0.0,
+        "baseline_di_ratio": 0.5849607182940516,
+        "approval_rates_baseline": {
+          "Q1": 54.54545454545454,
+          "Q2": 82.67898383371825,
+          "Q3": 86.66158536585365,
+          "Q4": 89.54402515723271,
+          "Q5": 93.24635456638526
+        },
+        "passes_80_rule": false,
+        "status": "NEEDS_IMPROVEMENT",
+        "selection_reason": "best_di_with_performance_floors",
+        "holdout_samples": 6517,
+        "holdout_size": 0.2
+      },
+      "governance": {
+        "passed": true,
+        "exit_code": 0
+      },
+      "decision": {
+        "status": "NO_GO",
+        "checks": {
+          "min_roc_auc": true,
+          "min_recall_class_1": true,
+          "min_f1_class_1": true,
+          "min_di_ratio": false,
+          "governance_pass": true
+        },
+        "failed_checks": [
+          "min_di_ratio"
+        ],
+        "thresholds": {
+          "min_roc_auc": 0.86,
+          "min_recall_class_1": 0.75,
+          "min_f1_class_1": 0.58,
+          "min_di_ratio": 0.8
+        }
+      }
+    },
+    {
+      "attempt": 2,
+      "config": {
+        "fairness_strategy": "class_weight",
+        "threshold_strategy": "f1",
+        "min_precision": 0.75
+      },
+      "performance": {
+        "roc_auc": 0.8697371599248596,
+        "accuracy": 0.8747890133497008,
+        "recall_class_1": 0.6251758087201125,
+        "f1_class_1": 0.6854279105628374,
+        "pr_auc": 0.7788733283001082
+      },
+      "fairness": {
+        "threshold": 0.35999999999999993,
+        "candidate_di_ratio": 0.28044112345990374,
+        "candidate_recall": 0.7735583684950773,
+        "candidate_f1": 0.6099251455503188,
+        "approval_rates_candidate": {
+          "Q1": 24.492862509391436,
+          "Q2": 68.36027713625866,
+          "Q3": 71.41768292682927,
+          "Q4": 81.99685534591194,
+          "Q5": 87.33691481197236
+        },
+        "selection_score": -1.018456067890337,
+        "di_gap": 0.5195588765400962,
+        "recall_gap": 0.0,
+        "f1_gap": 0.0,
+        "baseline_di_ratio": 0.5849607182940516,
+        "approval_rates_baseline": {
+          "Q1": 54.54545454545454,
+          "Q2": 82.67898383371825,
+          "Q3": 86.66158536585365,
+          "Q4": 89.54402515723271,
+          "Q5": 93.24635456638526
+        },
+        "passes_80_rule": false,
+        "status": "NEEDS_IMPROVEMENT",
+        "selection_reason": "best_di_with_performance_floors",
+        "holdout_samples": 6517,
+        "holdout_size": 0.2
+      },
+      "governance": {
+        "passed": true,
+        "exit_code": 0
+      },
+      "decision": {
+        "status": "NO_GO",
+        "checks": {
+          "min_roc_auc": true,
+          "min_recall_class_1": false,
+          "min_f1_class_1": true,
+          "min_di_ratio": false,
+          "governance_pass": true
+        },
+        "failed_checks": [
+          "min_recall_class_1",
+          "min_di_ratio"
+        ],
+        "thresholds": {
+          "min_roc_auc": 0.86,
+          "min_recall_class_1": 0.75,
+          "min_f1_class_1": 0.58,
+          "min_di_ratio": 0.8
+        }
+      }
+    }
+  ],
+  "decision": {
+    "status": "NO_GO",
+    "checks": {
+      "min_roc_auc": true,
+      "min_recall_class_1": false,
+      "min_f1_class_1": true,
+      "min_di_ratio": false,
+      "governance_pass": true
+    },
+    "failed_checks": [
+      "min_recall_class_1",
+      "min_di_ratio"
+    ],
+    "thresholds": {
+      "min_roc_auc": 0.86,
+      "min_recall_class_1": 0.75,
+      "min_f1_class_1": 0.58,
+      "min_di_ratio": 0.8
+    }
+  }
+}
