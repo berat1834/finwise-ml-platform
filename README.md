@@ -1,3 +1,11 @@
+# ⚠️ **Yasal Uyarı / Disclaimer**
+
+Bu proje **sadece eğitim ve araştırma amaçlı** paylaşılmıştır. Gerçek finansal kararlar, kredi başvuruları veya ticari uygulamalar için **kullanılamaz**. Proje kapsamında kullanılan tüm veri setleri anonimleştirilmiş, kamuya açık veya sentetiktir; **kişisel veri** veya gerçek müşteri bilgisi içermez. Proje, herhangi bir kurum veya kuruluşun ticari ürününü temsil etmez. Kullanımdan doğabilecek herhangi bir zarardan yazar(lar) sorumlu değildir.
+
+This project is **for educational and research purposes only**. It must not be used for real financial decisions, credit applications, or commercial deployment. All datasets are anonymized, public, or synthetic; **no personal or customer data** is included. The project does not represent any commercial product. The author(s) are **not liable** for any damages arising from use.
+
+Lisans: MIT — Ayrıntılar için LICENSE dosyasına bakınız.
+
 # 🏦 Kredi Risk Analizi Sistemi
 
 Yapay zeka destekli otomatik kredi başvuru değerlendirme sistemi. Müşterilerin girdiği bilgilere göre kredi onay/red kararı verir.
