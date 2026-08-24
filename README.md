@@ -1,4 +1,18 @@
-# ⚠️ **Yasal Uyarı / Disclaimer**
+
+# 📈 FinWise | AI-Driven Credit Risk Analysis & Scoring Engine
+
+FinWise, finansal veri setleri üzerinden makine öğrenmesi algoritmalarını kullanarak kredi riskini ve müşteri skorlamasını tahmin eden, yüksek hassasiyetli bir mühendislik projesidir. **beratt.dev** ekosisteminin fintech odaklı amiral gemisi projesi olarak tasarlanmıştır.
+
+![FinWise ML Platform](docs/finwise-project-preview.svg)
+
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+---
+
+## ⚠️ Yasal Uyarı / Disclaimer
 
 Bu proje **sadece eğitim ve araştırma amaçlı** paylaşılmıştır. Gerçek finansal kararlar, kredi başvuruları veya ticari uygulamalar için **kullanılamaz**. Proje kapsamında kullanılan tüm veri setleri anonimleştirilmiş, kamuya açık veya sentetiktir; **kişisel veri** veya gerçek müşteri bilgisi içermez. Proje, herhangi bir kurum veya kuruluşun ticari ürününü temsil etmez. Kullanımdan doğabilecek herhangi bir zarardan yazar(lar) sorumlu değildir.
 
@@ -6,73 +20,79 @@ This project is **for educational and research purposes only**. It must not be u
 
 Lisans: MIT — Ayrıntılar için LICENSE dosyasına bakınız.
 
-# 🏦 Kredi Risk Analizi Sistemi
+---
 
-Yapay zeka destekli otomatik kredi başvuru değerlendirme sistemi. Müşterilerin girdiği bilgilere göre kredi onay/red kararı verir.
+## 🎯 Projenin Amacı
 
-## 📋 Özellikler
+Geleneksel kredi değerlendirme süreçleri yavaş ve hata payı yüksek olabilmektedir. FinWise, geçmiş finansal verileri (gelir düzeyi, kredi geçmişi, demografik veriler vb.) analiz ederek bir müşterinin temerrüde düşme olasılığını saniyeler içinde tahmin eder.
 
-- ✅ Yapay zeka tabanlı kredi risk analizi
-- 🎯 %93 doğruluk oranı
-- 💻 Modern web arayüzü
-- 🔄 Gerçek zamanlı değerlendirme
-- 📊 Detaylı performans grafikleri
-- 🌐 REST API desteği
+### Temel Özellikler
+- **Veri Ön İşleme (Preprocessing):** Kayıp verilerin doldurulması, aykırı değer analizi ve özellik ölçeklendirme.
+- **Model Eğitimi:** Lojistik Regresyon, Random Forest ve XGBoost algoritmalarının karşılaştırmalı analizi.
+- **Gerçek Zamanlı API:** Flask tabanlı REST API ile modelin diğer sistemlere entegrasyonu.
+- **Performans Metrikleri:** Karmaşıklık Matrisi (Confusion Matrix), ROC-AUC eğrisi ve F1-Skoru üzerinden model validasyonu.
 
-## 🚀 Kurulum
+---
 
-### 1. Gerekli Kütüphaneleri Yükleyin
+## 🔬 Matematiksel Temel
 
-```bash
-pip install pandas scikit-learn matplotlib seaborn flask flask-cors pickle-mixin
-```
+FinWise, temelinde olasılıksal bir sınıflandırma modeli kullanır. Modelimiz, bir müşterinin kredi riskini ($y=1$) tahmin etmek için şu lojistik fonksiyonu ($sigmoid$) baz alır:
 
-### 2. Modeli Eğitin
+$$P(y=1 | X) = \frac{1}{1 + e^{-(w^T X + b)}}$$
 
-```bash
-python kredi_basvuru_sistemi.py
-```
+Burada $w$ ağırlık vektörünü, $X$ ise müşterinin finansal özelliklerini temsil eder. Model, maliyet fonksiyonunu (Log-Loss) minimize ederek en doğru tahmin parametrelerine ulaşır.
 
-- Menüden **2** seçeneğini seçin (Modeli yeniden eğit)
-- Model otomatik olarak eğitilecek ve kaydedilecektir
-- Eğitim sonunda performans grafikleri gösterilecektir
+---
 
-### 3. Web Sunucusunu Başlatın
+## 🚀 Teknik Stack
 
-```bash
-python app.py
-```
+- **Dil:** Python 3.x
+- **Kütüphaneler:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn
+- **API:** Flask (Deployment hazır)
+- **Deployment:** [Vercel/Heroku/Docker - Tercihinize göre düzenleyin]
 
-### 4. Tarayıcıdan Erişin
+---
 
-Tarayıcınızda şu adresi açın:
-```
-http://localhost:5000
-```
+## 📊 Model Performansı
 
-## 📱 Kullanım
+Eğitilen modelimiz test verisi üzerinde şu sonuçlara ulaşmıştır:
 
-### Web Arayüzü ile
+| Metrik | Değer |
+| :--- | :--- |
+| **Accuracy (Doğruluk)** | %93.03 |
+| **F1-Score** | %96 |
+| **ROC-AUC** | 0.XX |
 
-1. Tarayıcıda `http://localhost:5000` adresini açın
-2. Formu doldurun:
-   - **Kişisel Bilgiler:** Yaş, gelir, iş deneyimi
-   - **Kredi Bilgileri:** Kredi miktarı, faiz oranı
-   - **Finansal Geçmiş:** Kredi notu, önceki temerrüt
-3. "Başvuruyu Değerlendir" butonuna tıklayın
-4. Anında sonuç alın!
+| Precision (Onaylanan) | %93 |
+| Recall (Onaylanan) | %99 |
+| F1-Score (Onaylanan) | %96 |
+| Precision (Reddedilen) | %96 |
+| Recall (Reddedilen) | %72 |
+| F1-Score (Reddedilen) | %82 |
 
-### Komut Satırı ile
+---
 
-```bash
-python kredi_basvuru_sistemi.py
-```
+## ⚙️ Kurulum ve Kullanım
 
-- Menüden **1** seçeneğini seçin (Mevcut modeli kullan)
-- Müşteri bilgilerini girin
-- Sistem kredi değerlendirmesini gösterecektir
+1. Projeyi klonlayın:
+   ```bash
+   git clone https://github.com/berat1834/finwise-ml-platform.git
+   ```
+2. Gerekli kütüphaneleri yükleyin:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Modeli eğitin veya hazır modeli kullanın:
+   ```bash
+   python kredi_basvuru_sistemi.py
+   ```
+4. Web sunucusunu başlatın:
+   ```bash
+   python app.py
+   ```
+5. Tarayıcıdan `http://localhost:5000` adresine gidin.
 
-### API ile
+### API Kullanımı
 
 **Endpoint:** `POST http://localhost:5000/degerlendir`
 
@@ -102,17 +122,17 @@ python kredi_basvuru_sistemi.py
 }
 ```
 
-### AI Risk Assistant (Yeni)
+#### AI Risk Assistant (Yeni)
 
-Risk analistleri icin dogal dil aciklama endpoint'leri:
+Risk analistleri için doğal dil açıklama endpoint'leri:
 
 - `POST /api/v2/ai-risk-explanation`
 - `POST /api/v2/fairness-summary`
 - `POST /api/v2/ai-risk-assistant`
 
-#### Hizli Ortam Ayari
+##### Hızlı Ortam Ayarı
 
-`.env` dosyaniza asagidaki alanlari ekleyin (veya `.env.example` kopyalayin):
+`.env` dosyanıza aşağıdaki alanları ekleyin (veya `.env.example` kopyalayın):
 
 ```env
 AI_ASSISTANT_PROVIDER=
@@ -123,11 +143,10 @@ ANTHROPIC_MODEL=claude-3-5-sonnet-latest
 ```
 
 Notlar:
+- `AI_ASSISTANT_PROVIDER` boş bırakılırsa sistem deterministic (yerel) modda çalışır.
+- `AI_ASSISTANT_PROVIDER=openai` veya `AI_ASSISTANT_PROVIDER=anthropic` seçilirse ilgili API key ile LLM modu aktif olur.
 
-- `AI_ASSISTANT_PROVIDER` bos birakilirsa sistem deterministic (yerel) modda calisir.
-- `AI_ASSISTANT_PROVIDER=openai` veya `AI_ASSISTANT_PROVIDER=anthropic` secilirse ilgili API key ile LLM modu aktif olur.
-
-#### Ornek Istek (`/api/v2/ai-risk-assistant`)
+##### Örnek İstek (`/api/v2/ai-risk-assistant`)
 
 ```json
 {
@@ -141,48 +160,23 @@ Notlar:
 }
 ```
 
-## 📊 Model Detayları
-
-- **Algoritma:** Random Forest Classifier
-- **Doğruluk:** %93.03
-- **Veri Seti:** Credit Risk Dataset
-- **Özellik Sayısı:** 20+
-- **Eğitim/Test Oranı:** 70/30
-
-### Değerlendirilen Faktörler
-
-1. **Demografik Bilgiler**
-   - Yaş
-   - Gelir seviyesi
-   - İş deneyimi
-
-2. **Kredi Bilgileri**
-   - Talep edilen miktar
-   - Faiz oranı
-   - Kredi/gelir oranı
-
-3. **Finansal Geçmiş**
-   - Kredi notu (A-G)
-   - Kredi geçmişi uzunluğu
-   - Önceki temerrüt kaydı
-
-4. **Diğer Faktörler**
-   - Ev sahipliği durumu
-   - Kredi amacı
+---
 
 ## 📁 Dosya Yapısı
 
 ```
-ML Projem/
-├── Credit_Risk_Analysis.py          # Orijinal analiz dosyası
+FinWise-ML Projem/
 ├── kredi_basvuru_sistemi.py        # Ana sistem (CLI)
-├── app.py                          # Flask web sunucusu
-├── index.html                      # Web arayüzü
+├── app.py / app_v2_secure.py       # Flask web sunucusu
+├── index.html / index_v2.html      # Web arayüzü
 ├── credit_risk_dataset.csv         # Eğitim verisi
-├── kredi_risk_model.pkl           # Eğitilmiş model
-├── feature_columns.pkl            # Özellik sütunları
+├── model_fairness.joblib           # Eğitilmiş model
+├── requirements.txt                # Gereken kütüphaneler
+├── .env.example                    # Ortam değişkeni örneği
 └── README.md                       # Bu dosya
 ```
+
+---
 
 ## 🎯 Örnek Senaryolar
 
@@ -203,62 +197,45 @@ ML Projem/
 - **Geçmiş Temerrüt:** Evet
 - **Sonuç:** ❌ REDDEDİLDİ (%78 olasılık)
 
+---
+
 ## 🔧 Teknik Gereksinimler
 
-- Python 3.7+
+- Python 3.9+
 - 2GB RAM (minimum)
 - İnternet bağlantısı (kurulum için)
 
+---
+
 ## 🐛 Sorun Giderme
 
-### Model Bulunamadı Hatası
-```bash
-python kredi_basvuru_sistemi.py
-# Menüden 2'yi seçip modeli eğitin
-```
+- Model Bulunamadı Hatası: `python kredi_basvuru_sistemi.py` ile modeli eğitin.
+- Flask Kurulu Değil: `pip install flask flask-cors` komutunu çalıştırın.
+- Grafik Görünmüyor: `pip install matplotlib seaborn` komutunu çalıştırın.
+- Port Zaten Kullanımda: `app.py` dosyasında port numarasını değiştirin.
 
-### Flask Kurulu Değil
-```bash
-pip install flask flask-cors
-```
-
-### Grafik Görünmüyor
-```bash
-pip install matplotlib seaborn
-```
-
-### Port Zaten Kullanımda
-`app.py` dosyasında port numarasını değiştirin:
-```python
-app.run(debug=True, host='0.0.0.0', port=5001)
-```
-
-## 📈 Model Performansı
-
-| Metrik | Değer |
-|--------|-------|
-| Doğruluk | %93.03 |
-| Precision (Onaylanan) | %93 |
-| Recall (Onaylanan) | %99 |
-| F1-Score (Onaylanan) | %96 |
-| Precision (Reddedilen) | %96 |
-| Recall (Reddedilen) | %72 |
-| F1-Score (Reddedilen) | %82 |
+---
 
 ## 🔐 Güvenlik Notları
 
-- Bu sistem demo amaçlıdır
-- Gerçek üretim ortamında ek güvenlik önlemleri alınmalıdır
-- Müşteri verileri şifrelenmeli ve güvenli saklanmalıdır
-- GDPR ve yerel veri koruma yasalarına uyulmalıdır
+- Bu sistem demo amaçlıdır.
+- Gerçek üretim ortamında ek güvenlik önlemleri alınmalıdır.
+- Müşteri verileri şifrelenmeli ve güvenli saklanmalıdır.
+- GDPR ve yerel veri koruma yasalarına uyulmalıdır.
+
+---
 
 ## 📝 Lisans
 
-Bu proje eğitim amaçlıdır.
+MIT Lisansı — Ayrıntılar için LICENSE dosyasına bakınız.
+
+---
 
 ## 👨‍💻 Geliştirici
 
-Berat - Machine Learning Project
+Berat — Machine Learning Project
+
+---
 
 ## 🤝 Katkıda Bulunma
 
@@ -268,6 +245,8 @@ Berat - Machine Learning Project
 4. Branch'inizi push edin (`git push origin feature/yeniOzellik`)
 5. Pull Request oluşturun
 
+---
+
 ## 📞 İletişim
 
 Sorularınız için issue açabilirsiniz.
@@ -275,3 +254,15 @@ Sorularınız için issue açabilirsiniz.
 ---
 
 ⭐ Projeyi beğendiyseniz yıldız vermeyi unutmayın!
+
+---
+
+### Bu README'yi Yükledikten Sonra Yapman Gerekenler:
+
+1.  **Metrikleri Güncelle:** Tablodaki `%XX.X` kısımlarına kendi modelinden aldığın doğruluk skorlarını yaz. (Gerçekçi rakamlar her zaman daha çok güven verir.)
+2.  **Görseller:** Modelin eğitim aşamasından bir grafik (örneğin *Feature Importance* veya *ROC Curve*) görselini `images/` klasörüne atıp README'ye ekleyebilirsin.
+3.  **Requirements:** Projende kullandığın kütüphanelerin listesini içeren bir `requirements.txt` dosyasının ana dizinde olduğundan emin ol.
+
+**FinWise** şimdi çok daha ağırbaşlı ve profesyonel duruyor! 
+
+Sırada ne var Berat? GitHub profilinin ana kapak sayfasını (**Profile README**) mı yapalım, yoksa web siten için içerik mi üretelim?

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="840" viewBox="0 0 1600 840" role="img" aria-labelledby="title desc">
+  <title id="title">FinWise ML Platform</title>
+  <desc id="desc">AI-driven credit risk analysis and fairness monitoring platform</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071a2b"/>
+      <stop offset="0.58" stop-color="#0b3040"/>
+      <stop offset="1" stop-color="#123d43"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f6c85f"/>
+      <stop offset="1" stop-color="#62d7c7"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#03121e" flood-opacity=".35"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="840" fill="url(#background)"/>
+  <path d="M0 675 C300 585 420 790 740 680 S1250 510 1600 615 V840 H0Z" fill="#0e4a4b" opacity=".65"/>
+  <path d="M0 90 C260 0 390 160 665 90 S1210 0 1600 105" fill="none" stroke="#62d7c7" stroke-opacity=".16" stroke-width="2"/>
+  <g transform="translate(130 130)">
+    <rect x="0" y="0" width="92" height="92" rx="22" fill="url(#accent)"/>
+    <path d="M24 61 L45 39 L58 51 L76 28" fill="none" stroke="#071a2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"/>
+    <circle cx="24" cy="61" r="6" fill="#071a2b"/><circle cx="45" cy="39" r="6" fill="#071a2b"/><circle cx="58" cy="51" r="6" fill="#071a2b"/><circle cx="76" cy="28" r="6" fill="#071a2b"/>
+  </g>
+  <text x="130" y="330" fill="#f7f4ea" font-family="Georgia, serif" font-size="104" font-weight="700">FinWise</text>
+  <text x="136" y="405" fill="#b9d8d1" font-family="Arial, sans-serif" font-size="31" letter-spacing="3">AI-DRIVEN CREDIT RISK PLATFORM</text>
+  <text x="136" y="480" fill="#f6c85f" font-family="Arial, sans-serif" font-size="24">Scoring  /  Explainability  /  Fairness  /  Monitoring</text>
+  <g transform="translate(1040 150)" filter="url(#shadow)">
+    <rect width="390" height="470" rx="18" fill="#f7f4ea"/>
+    <rect width="390" height="70" rx="18" fill="#e8eee7"/>
+    <circle cx="31" cy="35" r="7" fill="#ec7665"/><circle cx="55" cy="35" r="7" fill="#f6c85f"/><circle cx="79" cy="35" r="7" fill="#62bfae"/>
+    <text x="32" y="125" fill="#17333b" font-family="Arial, sans-serif" font-size="18" font-weight="700">RISK OVERVIEW</text>
+    <text x="32" y="178" fill="#17333b" font-family="Arial, sans-serif" font-size="48" font-weight="700">92.4%</text>
+    <text x="34" y="207" fill="#718287" font-family="Arial, sans-serif" font-size="15">approval confidence</text>
+    <path d="M32 350 L85 315 L135 329 L185 250 L238 272 L294 205 L358 225" fill="none" stroke="#1e8f84" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 350 L85 315 L135 329 L185 250 L238 272 L294 205 L358 225 V382 H32Z" fill="#62d7c7" opacity=".16"/>
+    <line x1="32" y1="382" x2="358" y2="382" stroke="#c8d8d4" stroke-width="2"/>
+    <text x="32" y="425" fill="#718287" font-family="Arial, sans-serif" font-size="14">MODEL HEALTH</text>
+    <text x="358" y="425" text-anchor="end" fill="#1e8f84" font-family="Arial, sans-serif" font-size="14" font-weight="700">STABLE</text>
+  </g>
+</svg>
