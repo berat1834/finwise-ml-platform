@@ -5,6 +5,18 @@ FinWise, finansal veri setleri üzerinden makine öğrenmesi algoritmalarını k
 
 ![FinWise ML Platform](docs/finwise-project-preview.svg)
 
+## Platform Preview
+
+### Dashboard
+
+![FinWise dashboard](docs/screenshots/dashboard.png)
+
+### Credit application workflow
+
+![Credit application form](docs/screenshots/application-form.png)
+
+![Risk analysis workflow](docs/screenshots/analysis-workflow.png)
+
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
