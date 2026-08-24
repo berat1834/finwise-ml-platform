@@ -3,19 +3,11 @@
 
 FinWise, finansal veri setleri üzerinden makine öğrenmesi algoritmalarını kullanarak kredi riskini ve müşteri skorlamasını tahmin eden, yüksek hassasiyetli bir mühendislik projesidir. **beratt.dev** ekosisteminin fintech odaklı amiral gemisi projesi olarak tasarlanmıştır.
 
-![FinWise ML Platform](docs/finwise-project-preview.svg)
-
-## Platform Preview
-
-### Dashboard
+## Platform Screenshots
 
 ![FinWise dashboard](docs/screenshots/dashboard.png)
 
-### Credit application workflow
-
-![Credit application form](docs/screenshots/application-form.png)
-
-![Risk analysis workflow](docs/screenshots/analysis-workflow.png)
+![FinWise application form](docs/screenshots/application-form.png)
 
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
@@ -81,6 +73,16 @@ Eğitilen modelimiz test verisi üzerinde şu sonuçlara ulaşmıştır:
 | Precision (Reddedilen) | %96 |
 | Recall (Reddedilen) | %72 |
 | F1-Score (Reddedilen) | %82 |
+
+### Model Evaluation Visuals
+
+![Model success metrics](docs/success_metrics.png)
+
+![Confusion matrix](docs/confusion_matrix.png)
+
+![Precision-recall curve](docs/precision_recall_curve.png)
+
+![SHAP feature importance](docs/shap_summary_plot.png)
 
 ---
 
