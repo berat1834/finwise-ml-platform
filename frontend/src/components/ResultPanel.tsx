@@ -40,6 +40,7 @@ export default function ResultPanel({
   const [offersError, setOffersError] = useState("");
   const [selectedTerm, setSelectedTerm] = useState<number>(36);
   const [offerDisclaimer, setOfferDisclaimer] = useState("");
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   if (!result) return null;
 
@@ -68,6 +69,38 @@ export default function ResultPanel({
   const handleTermChange = (newTerm: number) => {
     setSelectedTerm(newTerm);
     fetchOffers(newTerm);
+  };
+
+  const downloadExecutivePDF = async () => {
+    const appId = result?.application_id;
+    if (!appId) {
+      window.print();
+      return;
+    }
+    setDownloadingPdf(true);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+      const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+      const res = await fetch(`${apiUrl}/api/v2/applications/${appId}/report/pdf`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      if (!res.ok) throw new Error("PDF indirilemedi");
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `FinWise_Kredi_Raporu_FW-${appId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF download error:", err);
+      window.print();
+    } finally {
+      setDownloadingPdf(false);
+      setDownloadDropdownOpen(false);
+    }
   };
 
   const downloadNativePDF = () => {
@@ -211,10 +244,20 @@ export default function ResultPanel({
             {downloadDropdownOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setDownloadDropdownOpen(false)}></div>
-                <div className="absolute top-full left-0 mt-2 w-full bg-white dark:bg-dark-800 border border-slate-200 dark:border-dark-700 shadow-xl rounded-xl overflow-hidden z-20">
-                  <button onClick={() => { downloadNativePDF(); setDownloadDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-dark-700 flex items-center gap-2"><FileText size={14} /> PDF (Yazdır)</button>
-                  <button onClick={() => { downloadCSV(); setDownloadDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-dark-700 flex items-center gap-2"><FileText size={14} /> CSV Tablosu</button>
-                  <button onClick={() => { downloadJSON(); setDownloadDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-dark-700 flex items-center gap-2"><FileJson size={14} /> JSON Verisi</button>
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-dark-800 border border-slate-200 dark:border-dark-700 shadow-xl rounded-xl overflow-hidden z-20 divide-y divide-slate-100 dark:divide-dark-700">
+                  <button 
+                    onClick={() => downloadExecutivePDF()} 
+                    disabled={downloadingPdf} 
+                    className="w-full text-left px-4 py-2.5 text-xs text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-dark-700 flex items-center gap-2 font-bold transition-colors"
+                  >
+                    {downloadingPdf ? <Loader2 size={14} className="animate-spin text-brand-500" /> : <FileText size={14} className="text-brand-500" />}
+                    Resmi Tahsis Raporu (PDF)
+                  </button>
+                  <div>
+                    <button onClick={() => { downloadNativePDF(); setDownloadDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-dark-700 flex items-center gap-2"><FileText size={14} /> Ekranı Yazdır</button>
+                    <button onClick={() => { downloadCSV(); setDownloadDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-dark-700 flex items-center gap-2"><FileText size={14} /> CSV Tablosu</button>
+                    <button onClick={() => { downloadJSON(); setDownloadDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-dark-700 flex items-center gap-2"><FileJson size={14} /> JSON Verisi</button>
+                  </div>
                 </div>
               </>
             )}

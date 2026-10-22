@@ -1116,6 +1116,40 @@ def applications_history():
     })
 
 
+@credit_bp.route("/api/v2/applications/<int:application_id>/report/pdf", methods=["GET"])
+@jwt_required()
+@limiter.limit("60 per hour")
+def download_credit_report_pdf(application_id: int):
+    """Generates and downloads an executive PDF credit report for an application."""
+    identity = get_jwt_identity()
+    user = User.query.filter_by(username=identity).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    q = Application.query.filter_by(id=application_id)
+    if user.role != "admin":
+        q = q.filter_by(analyst_id=user.id)
+    app_record = q.first()
+    if not app_record:
+        return jsonify({"error": "Application not found"}), 404
+
+    try:
+        from app.services.pdf_report_service import generate_credit_report_pdf
+        pdf_data = generate_credit_report_pdf(app_record, analyst_user=user)
+        filename = f"FinWise_Kredi_Raporu_FW-{app_record.id:06d}.pdf"
+        return Response(
+            pdf_data,
+            mimetype="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"',
+                "Content-Length": str(len(pdf_data)),
+            },
+        )
+    except Exception as exc:
+        logger.error("PDF generation failed for application %s: %s", application_id, exc)
+        return jsonify({"error": f"PDF rapor üretimi başarısız: {exc}"}), 500
+
+
 @credit_bp.route("/api/v2/applications/history/<int:application_id>")
 @jwt_required()
 @limiter.limit("120 per hour")

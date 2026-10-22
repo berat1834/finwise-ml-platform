@@ -23,3 +23,5 @@ openai==1.58.1
 evidently
 flasgger
 bleach
+reportlab>=4.0.0
+
