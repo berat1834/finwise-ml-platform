@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VTYS Proje Raporu - FinWise</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 2.5cm;
+    }
+
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+      line-height: 1.5;
+      color: #000;
+      background: #fff;
+      max-width: 17cm;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: bold;
+      page-break-after: avoid;
+    }
+
+    h1 {
+      font-size: 16pt;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 18pt;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: 14pt;
+      margin-top: 18pt;
+      margin-bottom: 10pt;
+    }
+
+    h3 {
+      font-size: 12pt;
+      margin-top: 14pt;
+      margin-bottom: 8pt;
+    }
+
+    h4 {
+      font-size: 12pt;
+      margin-top: 12pt;
+      margin-bottom: 6pt;
+    }
+
+    p {
+      text-align: justify;
+      margin-top: 0;
+      margin-bottom: 10pt;
+    }
+
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 10pt;
+      padding-left: 24pt;
+    }
+
+    li {
+      margin-bottom: 4pt;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10pt 0 14pt 0;
+    }
+
+    th, td {
+      border: 1px solid #000;
+      padding: 6pt;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .cover-page {
+      min-height: 25cm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+    }
+
+    .cover-top {
+      text-align: center;
+      margin-top: 3cm;
+    }
+
+    .cover-top .university {
+      font-size: 15pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 10pt;
+    }
+
+    .cover-top .faculty,
+    .cover-top .course {
+      font-size: 12pt;
+      margin-bottom: 8pt;
+    }
+
+    .cover-title {
+      text-align: center;
+      margin: 3cm 0 2.5cm 0;
+    }
+
+    .er-layout {
+      width: 100%;
+      border: none;
+      margin: 14pt 0;
+    }
+
+    .er-layout td {
+      border: none;
+      padding: 0;
+      vertical-align: top;
+    }
+
+    .er-top-left,
+    .er-top-right {
+      width: 38%;
+    }
+
+    .er-top-center {
+      width: 24%;
+    }
+
+    .er-box {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0;
+    }
+
+
+    .evidence-box {
+      border: 1px dashed #444;
+      padding: 8pt;
+      margin: 8pt 0 12pt 0;
+      font-size: 10.5pt;
+      background: #fafafa;
+    }
+
+    .evidence-title {
+      font-weight: bold;
+      margin-bottom: 4pt;
+    }
+    .er-box th,
+    .er-box td {
+      border: 1px solid #000;
+      padding: 5pt 6pt;
+      font-size: 10.5pt;
+    }
+
+    .er-box th {
+      text-align: center;
+      background: #e9e9e9;
+    }
+
+    .er-key-col {
+      width: 18%;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .er-field-strong {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .er-connector-row td {
+      height: 28pt;
+      font-size: 12pt;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .er-bridge-wrap {
+      width: 46%;
+      margin: 0 auto;
+    }
+
+    .er-note {
+      text-align: center;
+      font-size: 10pt;
+      margin-top: 6pt;
+      margin-bottom: 12pt;
+    }
+    .cover-title {
+      text-align: center;
+      margin: 3cm 0 2.5cm 0;
+    }
+
+    .cover-title .report-type {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-bottom: 20pt;
+      text-transform: uppercase;
+    }
+
+    .cover-title .project-title {
+      font-size: 18pt;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    .cover-info {
+      width: 75%;
+      margin: 0 auto 2cm auto;
+      border-collapse: collapse;
+    }
+
+    .cover-info td {
+      border: none;
+      padding: 6pt 4pt;
+    }
+
+    .cover-info td:first-child {
+      width: 35%;
+      font-weight: bold;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    .toc ol {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .toc li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted #555;
+      margin-bottom: 6pt;
+      padding-bottom: 2pt;
+    }
+
+    .small-note {
+      font-size: 10pt;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .code-block {
+      border: 1px solid #000;
+      padding: 8pt;
+      white-space: pre-wrap;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 10pt;
+      margin: 8pt 0 12pt 0;
+    }
+
+    .signature-space {
+      margin-top: 24pt;
+    }
+  </style>
+</head>
+<body>
+  <section class="cover-page">
+    <div class="cover-top">
+      <div class="university">Sakarya Üniversitesi</div>
+      <div class="faculty">Bilgisayar ve Bilişim Bilimleri Fakültesi</div>
+      <div class="course">Veri Tabanı Yönetim Sistemleri Dersi</div>
+    </div>
+
+    <div class="cover-title">
+      <div class="report-type">Proje Raporu</div>
+      <div class="project-title">FinWise: Yapay Zeka Destekli Kredi Risk Analizi ve Karar Destek Sistemi</div>
+    </div>
+
+    <table class="cover-info">
+      <tr>
+        <td>Hazırlayan</td>
+        <td>Berat Y.</td>
+      </tr>
+      <tr>
+        <td>Öğrenci No</td>
+        <td>[Doldurulacak]</td>
+      </tr>
+      <tr>
+        <td>Ders</td>
+        <td>Veri Tabanı Yönetim Sistemleri</td>
+      </tr>
+      <tr>
+        <td>Öğretim Elemanı</td>
+        <td>[Doldurulacak]</td>
+      </tr>
+      <tr>
+        <td>Teslim Tarihi</td>
+        <td>04.04.2026</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="page-break">
+    <h1>Özet</h1>
+    <p>Bu proje, klasik otomasyon mantığından uzak, analiz ve karar destek odaklı bir veri tabanı uygulaması olarak tasarlanmıştır. FinWise sistemi; kredi başvurularını, karar geçmişini, kullanıcı rollerini, manuel override işlemlerini, adillik denetimlerini, model sapması metriklerini ve servis seviyesi ihlallerini bir arada yöneten bir finansal veri platformudur. Projenin temel amacı, kredi değerlendirme sürecinde toplanan verilerden yararlanarak hem operasyonel hem de yönetsel seviyede analitik içgörü üretmektir.</p>
+    <p>Çalışma kapsamında PostgreSQL tabanlı bir veri modeli kurulmuş, en az 8 tablo koşulu aşılmış ve rapor teslimi için ek veri tabanı nesneleri tasarlanmıştır. Sistem içinde en az bir adet N-N ilişki, 10 analiz sorgusu, 1 view, 1 trigger ve 1 stored procedure yer almaktadır. Buna ek olarak ER diyagramı mantığı ve 1NF-3NF normalizasyon açıklamaları bu raporda ayrıntılı olarak sunulmuştur.</p>
+  </section>
+
+  <section class="page-break toc">
+    <h1>İçindekiler</h1>
+    <ol>
+      <li><span>1. Giriş</span><span>1</span></li>
+      <li><span>2. Veri Tabanı Tasarımı</span><span>2</span></li>
+      <li><span>3. ER Diyagramı Açıklaması</span><span>5</span></li>
+      <li><span>4. Normalizasyon Analizi</span><span>6</span></li>
+      <li><span>5. Zorunlu Teknik Gereksinimlerin Karşılanması</span><span>8</span></li>
+      <li><span>6. View, Trigger ve Stored Procedure Tasarımı</span><span>9</span></li>
+      <li><span>7. Analiz Sorguları</span><span>10</span></li>
+      <li><span>8. Performans ve İndeksleme</span><span>11</span></li>
+      <li><span>9. Güvenlik, Denetim ve Uyum</span><span>12</span></li>
+      <li><span>10. Sonuç</span><span>13</span></li>
+      <li><span>11. Kaynakça</span><span>14</span></li>
+      <li><span>12. Ekler</span><span>15</span></li>
+    </ol>
+    <p class="small-note">Not: Dosya Word ile açıldıktan sonra istenirse Word içindekiler özelliği ile sayfa numaraları otomatik güncellenebilir.</p>
+  </section>
+
+  <section>
+    <h1>1. Giriş</h1>
+
+    <h2>1.1 Problem Tanımı</h2>
+    <p>Finans sektöründe kredi başvurularının değerlendirilmesi sadece bir onay veya red otomasyonu değildir. Bu süreç aynı zamanda risk analizi, karar gerekçeleri, denetim izi, adillik ölçümleri ve kullanıcı müdahalelerinin takibini de gerektirir. Bu nedenle proje, tek boyutlu bir işlem otomasyonu yerine, çok katmanlı veri analizi ve karar destek bakış açısıyla ele alınmıştır.</p>
+
+    <h2>1.2 Projenin Amacı</h2>
+    <p>Bu projenin amacı aşağıdaki sorulara veri tabanı yardımıyla cevap verebilen bir sistem tasarlamaktır:</p>
+    <ol>
+      <li>Hangi kredi başvuruları hangi koşullarda onaylanmıştır?</li>
+      <li>Hangi kullanıcılar veya analistler hangi başvurular üzerinde çalışmıştır?</li>
+      <li>Manuel override işlemleri hangi gerekçelerle yapılmıştır?</li>
+      <li>Belirli dönemlerde karar oranları, adillik metrikleri ve model sapması nasıl değişmiştir?</li>
+      <li>Yönetim için kullanılabilecek özet raporlar ve karar destek sorguları nasıl üretilir?</li>
+    </ol>
+
+    <h2>1.3 Kapsam</h2>
+    <p>Proje kapsamı şu bileşenleri içerir:</p>
+    <ol>
+      <li>Kredi başvuru verilerinin saklanması</li>
+      <li>Karar ve override geçmişinin tutulması</li>
+      <li>Kullanıcı ve analist bazlı takip mekanizması</li>
+      <li>Müşteri abonelik ve SLA ihlal verilerinin saklanması</li>
+      <li>Fairness ve drift gibi ML yönetişim verilerinin saklanması</li>
+      <li>Analiz, raporlama ve yönetsel karar destek sorguları</li>
+    </ol>
+
+    <h1>2. Veri Tabanı Tasarımı</h1>
+
+    <h2>2.1 Genel Veri Modeli</h2>
+    <p>FinWise veri modeli, kredi değerlendirme sürecini olay bazlı ve analiz odaklı takip edecek şekilde tasarlanmıştır. Temel varlıklar aşağıdaki gibidir:</p>
+    <ol>
+      <li>applications</li>
+      <li>decisions</li>
+      <li>users</li>
+      <li>manual_overrides</li>
+      <li>sla_violations</li>
+      <li>customer_subscriptions</li>
+      <li>drift_metrics</li>
+      <li>fairness_audit_log</li>
+      <li>application_analyst_assignments</li>
+      <li>daily_decision_reports</li>
+    </ol>
+
+    <p>Teslim gereksinimindeki N-N ilişkiyi açık ve ölçülebilir şekilde göstermek için <strong>application_analyst_assignments</strong> bağlantı tablosu tanımlanmıştır. Bu tablo, bir başvurunun birden fazla analist tarafından incelenebilmesini ve bir analistin birden fazla başvuruya atanabilmesini sağlar.</p>
+
+    <h2>2.2 Tablolar ve İşlevleri</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tablo Adı</th>
+          <th>İşlevi</th>
+          <th>Anahtar Nokta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>applications</td>
+          <td>Kredi başvuru kayıtları ve model çıktıları</td>
+          <td>application_id alanı benzersizdir</td>
+        </tr>
+        <tr>
+          <td>decisions</td>
+          <td>Başvuru karar tarihçesi</td>
+          <td>applications ile ilişkilidir</td>
+        </tr>
+        <tr>
+          <td>users</td>
+          <td>Kullanıcı ve analist kayıtları</td>
+          <td>username benzersizdir</td>
+        </tr>
+        <tr>
+          <td>manual_overrides</td>
+          <td>İnsan müdahaleli karar değişiklikleri</td>
+          <td>Denetim izi sağlar</td>
+        </tr>
+        <tr>
+          <td>sla_violations</td>
+          <td>SLA ihlal kayıtları</td>
+          <td>Müşteri bazlı takip yapılır</td>
+        </tr>
+        <tr>
+          <td>customer_subscriptions</td>
+          <td>Paket ve abonelik bilgileri</td>
+          <td>Gelir ve hizmet seviyesi analizi yapılır</td>
+        </tr>
+        <tr>
+          <td>drift_metrics</td>
+          <td>Model sapması ölçümleri</td>
+          <td>Zaman serisi analizi yapılır</td>
+        </tr>
+        <tr>
+          <td>fairness_audit_log</td>
+          <td>Adillik denetim sonuçları</td>
+          <td>Uyum analizine hizmet eder</td>
+        </tr>
+        <tr>
+          <td>application_analyst_assignments</td>
+          <td>Başvuru-analist eşlemesi</td>
+          <td>N-N ilişkiyi kurar</td>
+        </tr>
+        <tr>
+          <td>daily_decision_reports</td>
+          <td>Günlük karar özet raporları</td>
+          <td>Stored procedure çıktısıdır</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2.3 Anahtarlar ve Bütünlük Kuralları</h2>
+    <ol>
+      <li>Her tabloda birincil anahtar bulunmaktadır.</li>
+      <li>applications.application_id benzersizdir.</li>
+      <li>users.username benzersizdir.</li>
+      <li>customer_subscriptions.customer_id benzersizdir.</li>
+      <li>decisions.application_id ve manual_overrides.application_id alanları applications.application_id alanına yabancı anahtar ile bağlıdır.</li>
+      <li>application_analyst_assignments.application_id alanı applications.application_id alanına bağlıdır.</li>
+      <li>application_analyst_assignments.user_id alanı users.id alanına bağlıdır.</li>
+    </ol>
+
+    <h2>2.4 İlişkiler</h2>
+    <ol>
+      <li>applications - decisions: 1-N</li>
+      <li>applications - manual_overrides: 1-N</li>
+      <li>applications - application_analyst_assignments: 1-N</li>
+      <li>users - application_analyst_assignments: 1-N</li>
+      <li>applications - users: N-N, application_analyst_assignments üzerinden</li>
+    </ol>
+
+    <h1>3. ER Diyagramı Açıklaması</h1>
+    <p>Aşağıda, örnek şemadaki gibi tablo kutuları ve PK/FK alanları ile gösterilen N-N ilişki diyagramı yer almaktadır:</p>
+    <table class="er-layout">
+      <tr>
+        <td class="er-top-left">
+          <table class="er-box">
+            <tr>
+              <th colspan="2">Applications</th>
+            </tr>
+            <tr>
+              <td class="er-key-col">PK</td>
+              <td class="er-field-strong">application_id</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>customer_id</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>created_at</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>loan_amnt</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>decision</td>
+            </tr>
+          </table>
+        </td>
+        <td class="er-top-center"></td>
+        <td class="er-top-right">
+          <table class="er-box">
+            <tr>
+              <th colspan="2">Users</th>
+            </tr>
+            <tr>
+              <td class="er-key-col">PK</td>
+              <td class="er-field-strong">id</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>username</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>email</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>role</td>
+            </tr>
+            <tr>
+              <td class="er-key-col"></td>
+              <td>is_active</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="er-connector-row">
+        <td>|<br>|<br>1</td>
+        <td></td>
+        <td>1<br>|<br>|</td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div class="er-bridge-wrap">
+            <table class="er-box">
+              <tr>
+                <th colspan="2">Application_Analyst_Assignments</th>
+              </tr>
+              <tr>
+                <td class="er-key-col">PK</td>
+                <td class="er-field-strong">assignment_id</td>
+              </tr>
+              <tr>
+                <td class="er-key-col">FK</td>
+                <td class="er-field-strong">application_id</td>
+              </tr>
+              <tr>
+                <td class="er-key-col">FK</td>
+                <td class="er-field-strong">user_id</td>
+              </tr>
+              <tr>
+                <td class="er-key-col"></td>
+                <td>assignment_role</td>
+              </tr>
+              <tr>
+                <td class="er-key-col"></td>
+                <td>assigned_at</td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p class="er-note">Bu yapı, applications ile users tabloları arasındaki çoktan çoka ilişkinin application_analyst_assignments bağlantı tablosu üzerinden kurulduğunu göstermektedir.</p>
+    <p>Bu yapıda en kritik nokta applications ve users arasındaki çoktan çoğa ilişkidir. Bu ilişki doğrudan tutulmamış, araya application_analyst_assignments tablosu eklenerek hem veri tekrarı azaltılmış hem de atama rolü ve atama tarihi gibi ek bilgiler saklanabilir hâle getirilmiştir.</p>
+
+    <h1>4. Normalizasyon Analizi</h1>
+
+    <h2>4.1 Birinci Normal Form (1NF)</h2>
+    <p>1NF koşulu, her hücrede atomik veri tutulmasını ve tekrar eden grupların bulunmamasını gerektirir. Bu projede her sütunda tek değer tutulmaktadır. Çoklu kullanıcı atamaları tek bir alan içinde liste olarak saklanmamış, bunun yerine ayrı bağlantı tablosuna taşınmıştır. Bu nedenle veri modeli 1NF koşulunu sağlamaktadır.</p>
+
+    <h2>4.2 İkinci Normal Form (2NF)</h2>
+    <p>2NF için tabloların 1NF olması ve bileşik anahtara kısmi bağımlılık içermemesi gerekir. Projedeki ana tabloların çoğunda tek alanlı birincil anahtar kullanılmıştır. N-N ilişkiyi kuran application_analyst_assignments tablosunda da bağımsız assignment_id anahtarı tanımlandığı için alanlar kaydın tamamına bağlıdır. Kısmi bağımlılık bulunmamaktadır.</p>
+
+    <h2>4.3 Üçüncü Normal Form (3NF)</h2>
+    <p>3NF için anahtar olmayan alanlar arasında geçişli bağımlılık olmamalıdır. Kullanıcı rol bilgisi users tablosunda, abonelik bilgileri customer_subscriptions tablosunda, override ayrıntıları manual_overrides tablosunda, fairness ve drift bilgileri ise ayrı analiz tablolarında tutulmaktadır. Böylece veri tekrarı azaltılmış ve güncelleme anomalileri önlenmiştir. Bu nedenle tasarım 3NF ile uyumludur.</p>
+
+    <h1>5. Zorunlu Teknik Gereksinimlerin Karşılanması</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Gereksinim</th>
+          <th>Durum</th>
+          <th>Açıklama</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>En az 8 tablo</td>
+          <td>Sağlandı</td>
+          <td>10 tablo üzerinden gösterildi</td>
+        </tr>
+        <tr>
+          <td>En az 1 adet N-N ilişki</td>
+          <td>Sağlandı</td>
+          <td>applications ile users arasında bağlantı tablosu üzerinden</td>
+        </tr>
+        <tr>
+          <td>En az 10 analiz sorgusu</td>
+          <td>Sağlandı</td>
+          <td>Ayrı SQL eki oluşturuldu</td>
+        </tr>
+        <tr>
+          <td>En az 1 view</td>
+          <td>Sağlandı</td>
+          <td>vw_application_decision_summary</td>
+        </tr>
+        <tr>
+          <td>En az 1 trigger</td>
+          <td>Sağlandı</td>
+          <td>2 adet trigger tanımlandı</td>
+        </tr>
+        <tr>
+          <td>En az 1 stored procedure</td>
+          <td>Sağlandı</td>
+          <td>sp_generate_daily_decision_report</td>
+        </tr>
+        <tr>
+          <td>ER diyagramı ve 1NF-3NF</td>
+          <td>Sağlandı</td>
+          <td>Bu raporda açıklanmıştır</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h1>6. View, Trigger ve Stored Procedure Tasarımı</h1>
+
+    <h2>6.1 View</h2>
+    <p>vw_application_decision_summary görünümü, başvuruya ait kredi tutarı, risk skoru, karar, karar tarihi ve override bilgisini tek tabloda birleştirir. Böylece raporlama sorguları sadeleşir ve tekrar eden JOIN işlemleri azaltılır.</p>
+    <div class="code-block">CREATE OR REPLACE VIEW vw_application_decision_summary AS
+  SELECT
+    a.application_id,
+    a.customer_id,
+    a.created_at,
+    a.loan_amnt,
+    a.loan_intent,
+    a.loan_grade,
+    a.probability,
+    a.decision,
+    d.decided_at,
+    d.decided_by,
+    mo.new_decision AS override_decision,
+    mo.override_reason,
+    CASE
+      WHEN mo.id IS NULL THEN FALSE
+      ELSE TRUE
+    END AS has_override
+  FROM applications a
+  LEFT JOIN decisions d ON d.application_id = a.application_id
+  LEFT JOIN manual_overrides mo ON mo.application_id = a.application_id;</div>
+    <div class="evidence-box">
+      <div class="evidence-title">Kanıt Görseli 6.1-A - View oluşturma onayı</div>
+      [Buraya "CREATE VIEW" çalıştırıldıktan sonra görünen "Query returned successfully" mesajının ekran görüntüsünü ekleyin.]
+      <p class="small-note"><strong>Kısa Değerlendirme:</strong> Görselde yer alan başarı mesajı, vw_application_decision_summary görünümünün veritabanında hatasız şekilde oluşturulduğunu doğrulamaktadır.</p>
+    </div>
+    <div class="code-block">SELECT *
+  FROM vw_application_decision_summary
+  LIMIT 20;</div>
+    <div class="evidence-box">
+      <div class="evidence-title">Kanıt Görseli 6.1-B - View çıktısı (Result Table)</div>
+      [Buraya vw_application_decision_summary sorgu sonucundaki birleşik tablo ekran görüntüsünü ekleyin.]
+      <p class="small-note"><strong>Kısa Değerlendirme:</strong> Sonuç tablosunda applications, decisions ve manual_overrides verilerinin tek çıktıda birleştiği görülmekte; bu durum view tanımının doğru çalıştığını kanıtlamaktadır.</p>
+    </div>
+
+    <h2>6.2 Trigger</h2>
+    <ol>
+      <li>trg_set_applications_updated_at: applications tablosundaki güncelleme işlemlerinde updated_at alanını otomatik günceller.</li>
+      <li>trg_log_manual_override: manual_overrides tablosuna kayıt geldiğinde decisions tablosuna denetim amaçlı karar kaydı ekler.</li>
+    </ol>
+    <div class="code-block">CREATE OR REPLACE FUNCTION fn_set_applications_updated_at()
+  RETURNS TRIGGER AS $$
+  BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  DROP TRIGGER IF EXISTS trg_set_applications_updated_at ON applications;
+  CREATE TRIGGER trg_set_applications_updated_at
+  BEFORE UPDATE ON applications
+  FOR EACH ROW
+  EXECUTE FUNCTION fn_set_applications_updated_at();</div>
+    <div class="evidence-box">
+      <div class="evidence-title">Kanıt Görseli 6.2-A - Trigger-1 oluşturma onayı</div>
+      [Buraya trg_set_applications_updated_at için "Query returned successfully" ekran görüntüsünü ekleyin.]
+      <p class="small-note"><strong>Kısa Değerlendirme:</strong> Başarı çıktısı, applications tablosu için updated_at alanını otomatik güncelleyen tetikleyicinin aktif edildiğini göstermektedir.</p>
+    </div>
+    <div class="code-block">CREATE OR REPLACE FUNCTION fn_log_manual_override()
+  RETURNS TRIGGER AS $$
+  BEGIN
+    INSERT INTO decisions (
+      application_id,
+      decision,
+      decision_reason,
+      decided_at,
+      decided_by
+    )
+    VALUES (
+      NEW.application_id,
+      NEW.new_decision,
+      CONCAT('AUTO_LOG_OVERRIDE: ', COALESCE(NEW.override_reason, 'N/A')),
+      COALESCE(NEW.overridden_at, CURRENT_TIMESTAMP),
+      COALESCE(NEW.overridden_by, 'system_trigger')
+    );
+
+    RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  DROP TRIGGER IF EXISTS trg_log_manual_override ON manual_overrides;
+  CREATE TRIGGER trg_log_manual_override
+  AFTER INSERT ON manual_overrides
+  FOR EACH ROW
+  EXECUTE FUNCTION fn_log_manual_override();</div>
+    <div class="evidence-box">
+      <div class="evidence-title">Kanıt Görseli 6.2-B - Trigger-2 oluşturma onayı</div>
+      [Buraya trg_log_manual_override için "Query returned successfully" ekran görüntüsünü ekleyin.]
+      <p class="small-note"><strong>Kısa Değerlendirme:</strong> Başarı mesajı, manual_overrides tablosuna kayıt eklenmesi durumunda decisions tablosuna denetim kaydı düşen tetikleyicinin oluşturulduğunu doğrulamaktadır.</p>
+    </div>
+
+    <h2>6.3 Stored Procedure</h2>
+    <p>sp_generate_daily_decision_report yordamı, verilen tarih aralığında günlük bazda toplam başvuru, onay, red ve override sayılarını hesaplar ve daily_decision_reports tablosuna yazar. Bu yapı tekrar üretilebilir yönetim raporları için uygundur.</p>
+    <div class="code-block">CREATE OR REPLACE PROCEDURE sp_generate_daily_decision_report(
+    IN p_start_date DATE,
+    IN p_end_date DATE
+  )
+  LANGUAGE plpgsql
+  AS $$
+  BEGIN
+    INSERT INTO daily_decision_reports (
+      report_date,
+      total_applications,
+      approved_count,
+      rejected_count,
+      override_count
+    )
+    SELECT
+      DATE(a.created_at) AS report_date,
+      COUNT(*) AS total_applications,
+      SUM(CASE WHEN a.decision IN ('APPROVED', 'ONAY', 'ONAYLANDI') THEN 1 ELSE 0 END) AS approved_count,
+      SUM(CASE WHEN a.decision IN ('REJECTED', 'RED', 'REDDEDILDI') THEN 1 ELSE 0 END) AS rejected_count,
+      SUM(CASE WHEN mo.id IS NOT NULL THEN 1 ELSE 0 END) AS override_count
+    FROM applications a
+    LEFT JOIN manual_overrides mo ON mo.application_id = a.application_id
+    WHERE DATE(a.created_at) BETWEEN p_start_date AND p_end_date
+    GROUP BY DATE(a.created_at)
+    ON CONFLICT (report_date)
+    DO UPDATE SET
+      total_applications = EXCLUDED.total_applications,
+      approved_count = EXCLUDED.approved_count,
+      rejected_count = EXCLUDED.rejected_count,
+      override_count = EXCLUDED.override_count,
+      generated_at = CURRENT_TIMESTAMP;
+  END;
+  $$;</div>
+    <div class="evidence-box">
+      <div class="evidence-title">Kanıt Görseli 6.3-A - Stored Procedure oluşturma onayı</div>
+      [Buraya "CREATE PROCEDURE" sonrası onay mesajı ekran görüntüsünü ekleyin.]
+      <p class="small-note"><strong>Kısa Değerlendirme:</strong> Onay çıktısı, günlük karar özetini üreten yordamın başarıyla derlendiğini ve çalıştırılmaya hazır olduğunu göstermektedir.</p>
+    </div>
+
+    <h1>7. Analiz Sorguları</h1>
+    <p>Proje kapsamında hazırlanan 10 sorgu, karar destek ihtiyaçlarını karşılayacak şekilde tasarlanmıştır. Her sorgu için kodun çalıştırıldığına dair Result Table ekran görüntüsü eklenmelidir.</p>
+
+    <h2>7.1 Sorgu-1: Günlük başvuru trendi analizi</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 1 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.1 - Result Table</div>[Buraya Sorgu-1 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Sonuç tablosu, günlük bazda toplam başvuru, onay ve red dağılımını göstererek zaman trendi analizini doğrulamaktadır.</p></div>
+
+    <h2>7.2 Sorgu-2: Kredi amacı bazlı onay oranı</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 2 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.2 - Result Table</div>[Buraya Sorgu-2 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Çıktı, kredi amacı kırılımında onay oranlarını yüzdesel olarak sunmakta ve karar eğilimlerini karşılaştırmalı biçimde ortaya koymaktadır.</p></div>
+
+    <h2>7.3 Sorgu-3: Kredi notu bazlı risk dağılımı</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 3 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.3 - Result Table</div>[Buraya Sorgu-3 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Kredi notu bazında ortalama risk olasılığı ve talep tutarı birlikte incelenerek risk segmentlerinin nicel etkisi gösterilmektedir.</p></div>
+
+    <h2>7.4 Sorgu-4: Analist bazlı iş yükü analizi</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 4 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.4 - Result Table</div>[Buraya Sorgu-4 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Sonuçlar, kullanıcı ve rol bazında atanan başvuru sayısını göstererek analist iş yükü dengesini değerlendirmeye imkan vermektedir.</p></div>
+
+    <h2>7.5 Sorgu-5: Override yapılan başvuruların listelenmesi</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 5 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.5 - Result Table</div>[Buraya Sorgu-5 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Override edilen başvuruların model kararı ile nihai kararının birlikte görüntülenmesi, insan müdahalelerinin denetim izini görünür kılmaktadır.</p></div>
+
+    <h2>7.6 Sorgu-6: Kullanıcı rolüne göre başvuru yoğunluğu</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 6 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.6 - Result Table</div>[Buraya Sorgu-6 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Kullanıcı rolü ve atama tipi birlikte analiz edilerek operasyonel dağılımın organizasyonel yapıyla uyumu incelenmektedir.</p></div>
+
+    <h2>7.7 Sorgu-7: Abonelik paketine göre gelir analizi</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 7 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.7 - Result Table</div>[Buraya Sorgu-7 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Paket bazlı müşteri sayısı ve gelir göstergeleri, abonelik segmentlerinin finansal katkısını karşılaştırmalı olarak sunmaktadır.</p></div>
+
+    <h2>7.8 Sorgu-8: Drift metrik ihlal analizi</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 8 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.8 - Result Table</div>[Buraya Sorgu-8 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Eşik aşımı yapan drift metriklerinin listelenmesi, model kararlılığının hangi metriklerde bozulduğunu açık biçimde ortaya koymaktadır.</p></div>
+
+    <h2>7.9 Sorgu-9: Fairness uyum analizi</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 9 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.9 - Result Table</div>[Buraya Sorgu-9 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Gelir dilimlerine göre fairness uyumsuzluk sayıları, adillik riskinin hangi gruplarda yoğunlaştığını göstermektedir.</p></div>
+
+    <h2>7.10 Sorgu-10: Alt sorgu ile yüksek riskli başvuruların tespiti</h2>
+    <p>Kaynak kod: VTYS_ANALIZ_SORGULARI.sql içindeki 10 numaralı sorgu.</p>
+    <div class="evidence-box"><div class="evidence-title">Kanıt Görseli 7.10 - Result Table</div>[Buraya Sorgu-10 sonucunun ekran görüntüsünü ekleyin.]<p class="small-note"><strong>Kısa Değerlendirme:</strong> Alt sorgu ile ortalamanın üzerinde kredi tutarı ve risk olasılığı taşıyan başvurular tespit edilerek öncelikli riskli kayıtlar belirlenmiştir.</p></div>
+
+    <h1>8. Performans ve İndeksleme</h1>
+    <p>Sistemde performansı artırmak için müşteri, karar ve tarih alanları üzerinde indeksleme yapılmıştır. Özellikle applications.created_at, applications.customer_id, decisions.application_id ve drift_metrics.recorded_at gibi alanlar, raporlama ve zaman bazlı analiz sorgularında maliyeti azaltmaktadır.</p>
+
+    <h1>9. Güvenlik, Denetim ve Uyum</h1>
+    <p>Veri tabanı tasarımında yalnızca veri saklama değil, denetlenebilirlik ve hesap verebilirlik de dikkate alınmıştır. users tablosu erişim kontrolü, manual_overrides tablosu insan müdahalesi takibi, decisions tablosu karar geçmişi, fairness_audit_log tablosu adillik takibi ve drift_metrics tablosu model davranışı izlemesi için kullanılmaktadır.</p>
+
+    <h1>10. Sonuç</h1>
+    <p>FinWise projesi, Veri Tabanı Yönetim Sistemleri dersi için istenen klasik otomasyon dışı, analiz ve karar destek odaklı proje beklentisini karşılayan uygun bir veri tabanı çalışmasıdır. Projede operasyonel veriler ile analitik veriler birbirinden ayrılmış, ilişkiler net biçimde modellenmiş ve ders kapsamında talep edilen teknik bileşenlerin tamamı karşılanmıştır.</p>
+    <p>Gelecekte sistem; daha ayrıntılı rol-yetki modeli, materialized view kullanımı, gelişmiş audit mekanizmaları ve yönetim panelleri için özet tablolar ile geliştirilebilir.</p>
+
+    <h1>11. Kaynakça</h1>
+    <ol>
+      <li>FinWise proje şeması, [init_postgres.sql] dosyası.</li>
+      <li>FinWise ORM modeli, [database_models.py] dosyası.</li>
+      <li>FinWise analiz sorguları, [VTYS_ANALIZ_SORGULARI.sql] dosyası.</li>
+      <li>FinWise ek VTYS nesneleri, [VTYS_EK_SQL.sql] dosyası.</li>
+      <li>Proje rapor taslağı, [VTYS_PROJE_RAPORU.md] dosyası.</li>
+    </ol>
+
+    <h1>12. Ekler</h1>
+    <p><strong>Ek-1:</strong> View, trigger ve stored procedure tanımları</p>
+    <p><strong>Ek-2:</strong> 10 adet analiz sorgusu</p>
+    <p><strong>Ek-3:</strong> Gereksinim uygunluk matrisi</p>
+
+    <div class="signature-space">
+      <p class="center">Hazırlayan<br>Berat Y.</p>
+    </div>
+  </section>
+</body>
+</html>

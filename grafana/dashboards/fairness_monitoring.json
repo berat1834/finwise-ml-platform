@@ -1,0 +1,108 @@
+{
+  "title": "Fairness Monitoring",
+  "uid": "fairness_mon_1",
+  "refresh": "30s",
+  "panels": [
+    {
+      "title": "Disparate Impact Ratio",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "finwise_fairness_di_ratio",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.75
+              },
+              {
+                "color": "green",
+                "value": 0.8
+              }
+            ]
+          }
+        }
+      },
+      "datasource": "${datasource}"
+    },
+    {
+      "title": "DI Trend over Time",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "finwise_fairness_di_ratio",
+          "refId": "A"
+        }
+      ],
+      "datasource": "${datasource}"
+    },
+    {
+      "title": "Group-wise Approval Rates",
+      "type": "barchart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "targets": [
+        {
+          "expr": "finwise_fairness_group_approval_rate",
+          "refId": "A"
+        }
+      ],
+      "datasource": "${datasource}"
+    },
+    {
+      "title": "Fairness Alert History",
+      "type": "table",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "targets": [
+        {
+          "expr": "ALERTS{alertname=~\"LowDisparateImpact|VeryLowDisparateImpact\"}",
+          "refId": "A"
+        }
+      ],
+      "datasource": "${datasource}"
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "value": "default"
+        }
+      }
+    ]
+  }
+}

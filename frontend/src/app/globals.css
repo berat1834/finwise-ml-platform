@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-brand-50: #f2fdf9;
+  --color-brand-100: #e1fbf2;
+  --color-brand-200: #c3f5e5;
+  --color-brand-300: #94eadd;
+  --color-brand-400: #5dd8ce;
+  --color-brand-500: #38bebb;
+  --color-brand-600: #259a9c;
+  --color-brand-700: #217b7f;
+  --color-brand-800: #1f6367;
+  --color-brand-900: #1d5256;
+  --color-brand-950: #0d3135;
+
+  --color-dark-900: #0B0F19;
+  --color-dark-800: #131A2A;
+  --color-dark-700: #1C263B;
+  --color-dark-600: #2A364F;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-premium: 0 10px 40px -10px rgba(0,0,0,0.08);
+  --shadow-premium-hover: 0 20px 40px -10px rgba(0,0,0,0.12);
+  --shadow-glow: 0 0 20px rgba(56, 190, 187, 0.4);
+  --shadow-glass: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+.dark {
+  --background: #0B0F19;
+  --foreground: #f8fafc;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-panel {
+  background: rgba(19, 26, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

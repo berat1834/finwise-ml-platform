@@ -1,0 +1,15 @@
+{
+  "model_version": "4.0-PROD",
+  "deployment_date": "2026-08-03T09:18:11.982423+00:00",
+  "fairness_thresholds": {
+    "min_disparate_impact_ratio": 0.8,
+    "alert_threshold_ratio": 0.85,
+    "min_approval_q1_percent": 3.0,
+    "min_approval_q1_absolute": 0.5,
+    "audit_sample_size": 500,
+    "audit_frequency_days": 30
+  },
+  "monitoring_enabled": true,
+  "last_audit": null,
+  "audit_history": []
+}

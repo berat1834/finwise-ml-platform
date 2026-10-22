@@ -7,9 +7,9 @@ services:
     container_name: credit-risk-db
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-credit_risk_db}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
@@ -18,7 +18,7 @@ services:
     networks:
       - credit-risk-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -60,14 +60,14 @@ services:
       JWT_ACCESS_TOKEN_EXPIRES: ${JWT_ACCESS_TOKEN_EXPIRES:-3600}
       
       # Database
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-credit_risk_db}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       
       # Redis
       REDIS_URL: redis://redis:6379/0
       
       # Model
-      MODEL_PATH: /app/model.joblib
-      MODEL_META_PATH: /app/model_meta.json
+      MODEL_PATH: /app/model_production_fair.joblib
+      MODEL_META_PATH: /app/model_production_fair_meta.json
       
       # Logging
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
@@ -78,8 +78,8 @@ services:
       # Workers
       WORKERS: ${WORKERS:-4}
     volumes:
-      - ./model.joblib:/app/model.joblib:ro
-      - ./model_meta.json:/app/model_meta.json:ro
+      - ./model_production_fair.joblib:/app/model_production_fair.joblib:ro
+      - ./model_production_fair_meta.json:/app/model_production_fair_meta.json:ro
       - ./logs:/app/logs
       - ./monitoring_reports:/app/monitoring_reports
       - ./bias_reports:/app/bias_reports
@@ -144,8 +144,8 @@ services:
     ports:
       - "${GRAFANA_PORT:-3000}:3000"
     environment:
-      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
-      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
       GF_INSTALL_PLUGINS: grafana-piechart-panel
     volumes:
       - grafana_data:/var/lib/grafana

@@ -30,20 +30,26 @@ def app():
         db.create_all()
         
         # Create test user
-        test_user = User(
-            username='testuser',
-            email='test@example.com',
-            password_hash=generate_password_hash('testpass123'),
-            role='analyst'
-        )
-        admin_user = User(
-            username='admin_test',
-            email='admin_test@example.com',
-            password_hash=generate_password_hash('AdminPass123'),
-            role='admin'
-        )
-        db.session.add(test_user)
-        db.session.add(admin_user)
+        test_user = User.query.filter_by(username='testuser').first()
+        if not test_user:
+            test_user = User(
+                username='testuser',
+                email='test@example.com',
+                password_hash=generate_password_hash('testpass123'),
+                role='analyst'
+            )
+            db.session.add(test_user)
+            
+        admin_user = User.query.filter_by(username='admin_test').first()
+        if not admin_user:
+            admin_user = User(
+                username='admin_test',
+                email='admin_test@example.com',
+                password_hash=generate_password_hash('AdminPass123'),
+                role='admin'
+            )
+            db.session.add(admin_user)
+            
         db.session.commit()
     
     yield flask_app

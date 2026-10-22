@@ -1,1 +1,0 @@
-Taşındı: Eski API dosyası.

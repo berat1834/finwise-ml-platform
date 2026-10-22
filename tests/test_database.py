@@ -86,7 +86,10 @@ class TestApplicationModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.15,
-            decision='ONAYLANDI'
+            decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            approval_probability=0.85,
+            rejection_probability=0.15,
+            threshold_used=0.5
         )
         db_session.add(application)
         db_session.commit()
@@ -113,7 +116,10 @@ class TestApplicationModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.15,
-            decision='ONAYLANDI'
+            decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            approval_probability=0.85,
+            rejection_probability=0.15,
+            threshold_used=0.5
         )
         db_session.add(application)
         db_session.commit()
@@ -139,7 +145,10 @@ class TestApplicationModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.15,
-            decision='ONAYLANDI'
+            decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            approval_probability=0.85,
+            rejection_probability=0.15,
+            threshold_used=0.5
         )
         db_session.add(application)
         db_session.commit()
@@ -170,7 +179,10 @@ class TestManualOverrideModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.65,
-            decision='REDDEDİLDİ'
+            decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
+            approval_probability=0.35,
+            rejection_probability=0.65,
+            threshold_used=0.5
         )
         db_session.add(application)
         db_session.commit()
@@ -178,10 +190,11 @@ class TestManualOverrideModel:
         # Create override
         override = ManualOverride(
             application_id=application.id,
-            overrider_id=user.id,
-            original_decision='REDDEDİLDİ',
-            new_decision='ONAYLANDI',
-            reason='Special circumstances'
+            user_id=user.id,
+            original_decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
+            new_decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            reason='Special circumstances',
+            reason_detail='Detailed explanation of circumstances'
         )
         db_session.add(override)
         db_session.commit()
@@ -208,24 +221,28 @@ class TestManualOverrideModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.65,
-            decision='REDDEDİLDİ'
+            decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
+            approval_probability=0.35,
+            rejection_probability=0.65,
+            threshold_used=0.5
         )
         db_session.add(application)
         db_session.commit()
         
         override = ManualOverride(
             application_id=application.id,
-            overrider_id=user.id,
-            original_decision='REDDEDİLDİ',
-            new_decision='ONAYLANDI',
-            reason='Test'
+            user_id=user.id,
+            original_decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
+            new_decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            reason='Test',
+            reason_detail='Detailed reason'
         )
         db_session.add(override)
         db_session.commit()
         
         # Test relationships
         assert override.application.id == application.id
-        assert override.overrider.username == 'testuser'
+        assert override.override_by.username == 'testuser'
 
 
 class TestAuditLogModel:
@@ -237,7 +254,7 @@ class TestAuditLogModel:
         
         audit = AuditLog(
             user_id=user.id,
-            action='LOGIN',
+            event_type='LOGIN',
             endpoint='/auth/login',
             ip_address='127.0.0.1',
             user_agent='pytest'
@@ -246,7 +263,7 @@ class TestAuditLogModel:
         db_session.commit()
         
         assert audit.id is not None
-        assert audit.action == 'LOGIN'
+        assert audit.event_type == 'LOGIN'
         assert audit.ip_address == '127.0.0.1'
     
     def test_audit_log_timestamps(self, app, db_session):
@@ -255,14 +272,14 @@ class TestAuditLogModel:
         
         audit = AuditLog(
             user_id=user.id,
-            action='EVALUATE',
+            event_type='EVALUATE',
             endpoint='/degerlendir'
         )
         db_session.add(audit)
         db_session.commit()
         
-        assert audit.timestamp is not None
-        assert isinstance(audit.timestamp, datetime)
+        assert audit.created_at is not None
+        assert isinstance(audit.created_at, datetime)
 
 
 class TestDatabaseQueries:
@@ -288,7 +305,10 @@ class TestDatabaseQueries:
                 loan_grade='B',
                 cb_person_default_on_file='N',
                 risk_score=0.15,
-                decision='ONAYLANDI'
+                decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+                approval_probability=0.85,
+                rejection_probability=0.15,
+                threshold_used=0.5
             )
             db_session.add(app)
         db_session.commit()
@@ -317,13 +337,16 @@ class TestDatabaseQueries:
                 loan_grade='B',
                 cb_person_default_on_file='N',
                 risk_score=0.15,
-                decision=decision
+                decision=decision,
+                approval_probability=0.85 if decision == 'ONAYLANDI' else 0.35,
+                rejection_probability=0.15 if decision == 'ONAYLANDI' else 0.65,
+                threshold_used=0.5
             )
             db_session.add(app)
         db_session.commit()
         
-        approved = db_session.query(Application).filter_by(decision='ONAYLANDI').count()
-        rejected = db_session.query(Application).filter_by(decision='REDDEDİLDİ').count()
+        approved = db_session.query(Application).filter_by(decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5).count()
+        rejected = db_session.query(Application).filter_by(decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5).count()
         
         assert approved >= 2
         assert rejected >= 1

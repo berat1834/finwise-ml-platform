@@ -1,8 +1,23 @@
 version: "3.9"
 services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: finwise-frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    depends_on:
+      - api
+
   api:
-    build: .
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: credit-risk-api
+    command: ["waitress-serve", "--host=0.0.0.0", "--port=5000", "--call", "app_v2_secure:create_app"]
     ports:
       - "5000:5000"
     environment:
@@ -10,14 +25,14 @@ services:
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - SECRET_KEY=${SECRET_KEY}
       - DATABASE_URL=${DATABASE_URL}
-      - MODEL_PATH=/app/model.joblib
-      - MODEL_META_PATH=/app/model_meta.json
-      - LOG_LEVEL=INFO
-      - ALLOWED_ORIGINS=http://localhost:5000,http://127.0.0.1:5000
+      - MODEL_PATH=/app/production_model.joblib
+      - MODEL_META_PATH=/app/production_model_meta.json
+      - ALLOWED_ORIGINS=http://localhost:3001,http://localhost:3000,http://127.0.0.1:3000
     volumes:
-      - ./:/app
+      - ./backend:/app
     depends_on:
       - db
+
   db:
     image: postgres:16
     container_name: credit-risk-db
@@ -31,5 +46,7 @@ services:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+
 volumes:
   pgdata:
+

@@ -67,6 +67,25 @@ CREATE TABLE IF NOT EXISTS users (
     is_active BOOLEAN DEFAULT TRUE
 );
 
+-- Application-analyst assignments table for N-N relationship
+CREATE TABLE IF NOT EXISTS application_analyst_assignments (
+    assignment_id SERIAL PRIMARY KEY,
+    application_id VARCHAR(50) NOT NULL,
+    user_id INTEGER NOT NULL,
+    assignment_role VARCHAR(50) NOT NULL DEFAULT 'reviewer',
+    assigned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT,
+
+    CONSTRAINT fk_assignment_application
+        FOREIGN KEY (application_id) REFERENCES applications(application_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_assignment_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE CASCADE,
+    CONSTRAINT uq_application_user_role
+        UNIQUE (application_id, user_id, assignment_role)
+);
+
 -- Manual overrides table
 CREATE TABLE IF NOT EXISTS manual_overrides (
     id SERIAL PRIMARY KEY,
@@ -137,17 +156,12 @@ CREATE INDEX idx_applications_decision ON applications(decision);
 CREATE INDEX idx_decisions_application_id ON decisions(application_id);
 CREATE INDEX idx_decisions_decided_at ON decisions(decided_at);
 CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_assignment_application_id ON application_analyst_assignments(application_id);
+CREATE INDEX idx_assignment_user_id ON application_analyst_assignments(user_id);
 CREATE INDEX idx_sla_violations_customer_id ON sla_violations(customer_id);
 CREATE INDEX idx_drift_metrics_recorded_at ON drift_metrics(recorded_at);
 
--- Insert default admin user (password: admin123)
-INSERT INTO users (username, password_hash, email, role) 
-VALUES (
-    'admin',
-    'pbkdf2:sha256:260000$8Z3qJ5jK$7c6f8d9e8b7a6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1',
-    'admin@finwise.local',
-    'admin'
-) ON CONFLICT (username) DO NOTHING;
+-- Run seed_admin.py to create initial admin user
 
 -- Insert sample subscription tiers
 INSERT INTO customer_subscriptions (customer_id, tier, monthly_fee, max_requests, sla_uptime, sla_response_time_ms)

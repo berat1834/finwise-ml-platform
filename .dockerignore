@@ -1,0 +1,10 @@
+.venv/
+.git/
+__pycache__/
+*.pyc
+logs/
+.idea/
+.vscode/
+pgadmin_data/
+postgres_data/
+*.db
