@@ -1,7 +1,17 @@
+import sys
+from pathlib import Path
 import pytest
 import numpy as np
 import pandas as pd
-from app.services.drift_service import calculate_psi, calculate_categorical_csi, DriftService
+
+_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(_ROOT))
+sys.path.insert(0, str(_ROOT / "backend"))
+
+try:
+    from backend.app.services.drift_service import calculate_psi, calculate_categorical_csi, DriftService
+except ImportError:
+    from app.services.drift_service import calculate_psi, calculate_categorical_csi, DriftService
 
 
 class TestDriftService:

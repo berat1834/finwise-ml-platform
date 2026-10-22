@@ -13,7 +13,10 @@ _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT))
 sys.path.insert(0, str(_ROOT / "backend"))
 
-from app.utils.data_utils import engineer_features
+try:
+    from backend.app.utils.data_utils import engineer_features
+except ImportError:
+    from app.utils.data_utils import engineer_features
 
 
 class TestModelPredictions:

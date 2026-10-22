@@ -290,15 +290,16 @@ class ModelRouter:
         try:
             # ExponentiatedGradient in older versions doesn't have predict_proba
             proba = model.predict_proba(model_input)[0]
-        except AttributeError:
-            if hasattr(model, "_predictors"):
-                # Fairlearn ExponentiatedGradient has _predictors and _weights
-                # We can calculate expected probability!
+        except (AttributeError, Exception):
+            clf_step = getattr(model, "named_steps", {}).get("clf", model)
+            if hasattr(clf_step, "predictors_") and hasattr(clf_step, "weights_"):
                 import numpy as np
+                pre = getattr(model, "named_steps", {}).get("pre")
+                X_trans = pre.transform(df) if pre is not None else model_input
                 expected_probs = np.zeros(2)
-                for weight, predictor in zip(model.weights_, model.predictors_):
+                for weight, predictor in zip(clf_step.weights_, clf_step.predictors_):
                     if weight > 0:
-                        pred = predictor.predict(model_input)[0]
+                        pred = predictor.predict(X_trans)[0]
                         expected_probs[int(pred)] += weight
                 proba = list(expected_probs)
             else:
