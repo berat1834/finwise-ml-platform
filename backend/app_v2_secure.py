@@ -715,8 +715,15 @@ def _adverse_action_notice(data: dict, shap_features: list) -> dict:
 
 @health_bp.route("/health")
 def health():
+    db_ok = True
+    try:
+        db.session.execute(db.text("SELECT 1"))
+    except Exception:
+        db_ok = False
     return jsonify({
         "status": "up",
+        "database": "connected" if db_ok else "disconnected",
+        "model": "loaded" if (PRIMARY_MODEL is not None) else "not_loaded",
         "routing_mode": router.mode,
         "canary_loaded": CANARY_MODEL is not None,
         "timestamp": utcnow().isoformat(),
@@ -1868,10 +1875,24 @@ def predict():
     if not (0 < loan_percent_income <= 1):
         return jsonify({"error": "loan_percent_income must be 0–1"}), 400
 
-    home_ownership = _sanitize(data.get("person_home_ownership", ""))
-    loan_intent = _sanitize(data.get("loan_intent", ""))
-    loan_grade = _sanitize(data.get("loan_grade", ""))
-    default_on_file = _sanitize(data.get("cb_person_default_on_file", "N"))
+    home_ownership = _sanitize(data.get("person_home_ownership", "")).upper()
+    loan_intent = _sanitize(data.get("loan_intent", "")).upper()
+    loan_grade = _sanitize(data.get("loan_grade", "")).upper()
+    default_on_file = _sanitize(data.get("cb_person_default_on_file", "N")).upper()
+
+    valid_home_ownership = {"RENT", "OWN", "MORTGAGE", "OTHER"}
+    valid_loan_intent = {"PERSONAL", "EDUCATION", "MEDICAL", "VENTURE", "HOMEIMPROVEMENT", "DEBTCONSOLIDATION"}
+    valid_loan_grade = {"A", "B", "C", "D", "E", "F", "G"}
+    valid_default_on_file = {"Y", "N"}
+
+    if home_ownership not in valid_home_ownership:
+        return jsonify({"error": f"Invalid person_home_ownership: {home_ownership}"}), 400
+    if loan_intent not in valid_loan_intent:
+        return jsonify({"error": f"Invalid loan_intent: {loan_intent}"}), 400
+    if loan_grade not in valid_loan_grade:
+        return jsonify({"error": f"Invalid loan_grade: {loan_grade}"}), 400
+    if default_on_file not in valid_default_on_file:
+        return jsonify({"error": f"Invalid cb_person_default_on_file: {default_on_file}"}), 400
 
     # --- FRAUD DETECTION & MOCK API LAYER ---
     from app.services.fraud_service import FraudService
@@ -1997,6 +2018,7 @@ def predict():
         "model_version": result["model_version"],
         "model_routing": result.get("model_routing"),
         "application_id": application_id,
+        "basvuru_id": application_id,
         "timestamp": utcnow().isoformat(),
         "fraud_analysis": fraud_analysis,
     }
@@ -2004,8 +2026,10 @@ def predict():
     if shap_features:
         response["shap_top_features"] = shap_features
 
-    if result["tahmin"] == "REDDEDİLDİ":
-        response["adverse_action_notice"] = _adverse_action_notice(feature_row, shap_features)
+    if result["tahmin"] in {"REDDEDİLDİ", "REDDEDILDI"}:
+        notice = _adverse_action_notice(feature_row, shap_features)
+        response["adverse_action_notice"] = notice
+        response["adverse_action"] = notice
 
     return jsonify(response)
 
@@ -2094,6 +2118,10 @@ def statistics():
     override_rate = f"{(overridden / total * 100):.1f}%" if total else "0.0%"
 
     return jsonify({
+        "total_applications": total,
+        "approved": approved,
+        "rejected": rejected,
+        "overridden": overridden,
         "model_info": {
             "model_tipi": PRIMARY_META.get("model_type", "RandomForestClassifier"),
             "threshold": PRIMARY_THRESHOLD,
@@ -2317,6 +2345,12 @@ def jwt_expired_token(jwt_header, jwt_payload):
 def add_request_context():
     setattr(request, "_request_start_ts", time.time())
     setattr(request, "_request_id", request.headers.get("X-Request-ID") or str(uuid.uuid4()))
+
+    lower_path = request.path.lower()
+    restricted_exts = (".py", ".env", ".git", ".db", ".joblib", ".sqlite", ".log", ".ini", ".yaml", ".yml")
+    if any(lower_path.endswith(ext) or (ext + "/" in lower_path) for ext in restricted_exts):
+        return jsonify({"error": "Access to requested resource is forbidden"}), 403
+
     if ENFORCE_JSON_REQUESTS and request.method in {"POST", "PUT", "PATCH"}:
         enforce_paths = (
             request.path.startswith("/api/")

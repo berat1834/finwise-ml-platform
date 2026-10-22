@@ -86,7 +86,7 @@ class TestApplicationModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.15,
-            decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            decision='ONAYLANDI',
             approval_probability=0.85,
             rejection_probability=0.15,
             threshold_used=0.5
@@ -116,7 +116,7 @@ class TestApplicationModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.15,
-            decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            decision='ONAYLANDI',
             approval_probability=0.85,
             rejection_probability=0.15,
             threshold_used=0.5
@@ -145,7 +145,7 @@ class TestApplicationModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.15,
-            decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            decision='ONAYLANDI',
             approval_probability=0.85,
             rejection_probability=0.15,
             threshold_used=0.5
@@ -179,7 +179,7 @@ class TestManualOverrideModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.65,
-            decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
+            decision='REDDEDİLDİ',
             approval_probability=0.35,
             rejection_probability=0.65,
             threshold_used=0.5
@@ -191,8 +191,8 @@ class TestManualOverrideModel:
         override = ManualOverride(
             application_id=application.id,
             user_id=user.id,
-            original_decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
-            new_decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            original_decision='REDDEDİLDİ',
+            new_decision='ONAYLANDI',
             reason='Special circumstances',
             reason_detail='Detailed explanation of circumstances'
         )
@@ -221,7 +221,7 @@ class TestManualOverrideModel:
             loan_grade='B',
             cb_person_default_on_file='N',
             risk_score=0.65,
-            decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
+            decision='REDDEDİLDİ',
             approval_probability=0.35,
             rejection_probability=0.65,
             threshold_used=0.5
@@ -232,8 +232,8 @@ class TestManualOverrideModel:
         override = ManualOverride(
             application_id=application.id,
             user_id=user.id,
-            original_decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5,
-            new_decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+            original_decision='REDDEDİLDİ',
+            new_decision='ONAYLANDI',
             reason='Test',
             reason_detail='Detailed reason'
         )
@@ -305,7 +305,7 @@ class TestDatabaseQueries:
                 loan_grade='B',
                 cb_person_default_on_file='N',
                 risk_score=0.15,
-                decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5,
+                decision='ONAYLANDI',
                 approval_probability=0.85,
                 rejection_probability=0.15,
                 threshold_used=0.5
@@ -345,8 +345,8 @@ class TestDatabaseQueries:
             db_session.add(app)
         db_session.commit()
         
-        approved = db_session.query(Application).filter_by(decision='ONAYLANDI', approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5, approval_probability=0.85, rejection_probability=0.15, threshold_used=0.5).count()
-        rejected = db_session.query(Application).filter_by(decision='REDDEDİLDİ', approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5, approval_probability=0.35, rejection_probability=0.65, threshold_used=0.5).count()
+        approved = db_session.query(Application).filter_by(decision='ONAYLANDI').count()
+        rejected = db_session.query(Application).filter_by(decision='REDDEDİLDİ').count()
         
         assert approved >= 2
         assert rejected >= 1

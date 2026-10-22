@@ -88,7 +88,7 @@ class TestEvaluationEndpoint:
         assert response.status_code == 200
         data = response.json
         # High risk should be rejected
-        assert data['tahmin'] == 'REDDEDILDI'
+        assert data['tahmin'] in ['REDDEDILDI', 'REDDEDİLDİ']
         assert data['red_olasiligi'] > 0.5
         # Should include adverse action notice
         assert 'adverse_action_notice' in data or 'adverse_action' in data
@@ -189,22 +189,22 @@ class TestOverrideEndpoint:
         })
         assert response.status_code == 401
     
-    def test_override_missing_fields(self, client, auth_headers):
+    def test_override_missing_fields(self, client, admin_auth_headers):
         """Test override with missing fields"""
         response = client.post('/override',
                               json={'application_id': 1},
-                              headers=auth_headers)
+                              headers=admin_auth_headers)
         assert response.status_code == 400
     
-    def test_override_success(self, client, auth_headers, high_risk_application_data):
+    def test_override_success(self, client, admin_auth_headers, high_risk_application_data):
         """Test successful override"""
         # First create a rejected application
         eval_response = client.post('/degerlendir',
                                    json=high_risk_application_data,
-                                   headers=auth_headers)
+                                   headers=admin_auth_headers)
         
         if eval_response.status_code == 200:
-            app_id = eval_response.json.get('basvuru_id')
+            app_id = eval_response.json.get('basvuru_id') or eval_response.json.get('application_id')
             
             if app_id:
                 # Override the decision
@@ -214,7 +214,7 @@ class TestOverrideEndpoint:
                                                    'new_decision': 'ONAYLANDI',
                                                    'reason': 'Special circumstances'
                                                },
-                                               headers=auth_headers)
+                                               headers=admin_auth_headers)
                 assert override_response.status_code in [200, 400]  # May fail if already overridden
 
 

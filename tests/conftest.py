@@ -6,10 +6,12 @@ import sys
 import os
 from pathlib import Path
 
-# Add project root to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add project root and backend to path
+_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(_ROOT))
+sys.path.insert(0, str(_ROOT / "backend"))
 
-from app_v2_secure import app as flask_app, db
+from app_v2_secure import app as flask_app, db, limiter, _auth_failures
 from models import User, Application, ManualOverride, AuditLog
 from werkzeug.security import generate_password_hash
 import tempfile
@@ -24,6 +26,8 @@ def app():
     flask_app.config['JWT_SECRET_KEY'] = 'test-secret-key'
     flask_app.config['WTF_CSRF_ENABLED'] = False
     flask_app.config['RATELIMIT_ENABLED'] = False
+    limiter.enabled = False
+    _auth_failures.clear()
     
     # Create tables
     with flask_app.app_context():
