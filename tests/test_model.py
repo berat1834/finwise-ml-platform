@@ -8,19 +8,22 @@ from pathlib import Path
 import joblib
 import json
 import sys
+from typing import Any
 
 _ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_ROOT))
 sys.path.insert(0, str(_ROOT / "backend"))
 
 try:
-    from backend.app.utils.data_utils import engineer_features
-except ImportError:
     from app.utils.data_utils import engineer_features
+except ImportError:
+    from backend.app.utils.data_utils import engineer_features  # type: ignore[import-not-found]
 
 
 class TestModelPredictions:
     """Test model prediction functionality"""
+    model: Any = None
+    meta: dict[str, Any] = {}
     
     @pytest.fixture(autouse=True)
     def setup(self):
@@ -41,6 +44,17 @@ class TestModelPredictions:
 
     def _prep(self, df):
         return engineer_features(df)
+    
+    def _predict_rejection_prob(self, df) -> float:
+        if hasattr(self.model, "predict_proba"):
+            return float(self.model.predict_proba(df)[0, 1])
+        clf = getattr(self.model, "named_steps", {}).get("clf", self.model)
+        if hasattr(clf, "predictors_") and hasattr(clf, "weights_"):
+            pre = getattr(self.model, "named_steps", {}).get("pre")
+            X_tr = pre.transform(df) if pre is not None else df
+            rejection_prob = sum(w for w, p in zip(clf.weights_, clf.predictors_) if w > 0 and int(p.predict(X_tr)[0]) == 1)
+            return float(rejection_prob)
+        return float(self.model.predict(df)[0])
     
     def test_model_loaded(self):
         """Test model loads successfully"""
@@ -72,12 +86,12 @@ class TestModelPredictions:
     def test_low_risk_profile(self):
         """Test low risk profile gets approved"""
         low_risk = pd.DataFrame([{
-            'person_age': 40,
-            'person_income': 120000.0,
-            'person_emp_length': 12,
-            'loan_amnt': 10000.0,
-            'loan_int_rate': 5.5,
-            'loan_percent_income': 0.08,
+            'person_age': 35,
+            'person_income': 80000.0,
+            'person_emp_length': 10,
+            'loan_amnt': 15000.0,
+            'loan_int_rate': 6.0,
+            'loan_percent_income': 0.15,
             'cb_person_cred_hist_length': 15,
             'person_home_ownership': 'OWN',
             'loan_intent': 'PERSONAL',
@@ -86,7 +100,7 @@ class TestModelPredictions:
         }])
         low_risk = self._prep(low_risk)
         
-        proba = ((self.model.predict_proba(low_risk) if hasattr(self.model, 'predict_proba') else [[1-p, p] for p in self.model.predict(low_risk)])[0, 1] if hasattr(self.model, 'predict_proba') else self.model.predict(low_risk)[0])
+        proba = self._predict_rejection_prob(low_risk)
         threshold = self.meta['threshold']
         
         # Low risk should be below threshold (approved)
@@ -109,7 +123,7 @@ class TestModelPredictions:
         }])
         high_risk = self._prep(high_risk)
         
-        proba = ((self.model.predict_proba(high_risk) if hasattr(self.model, 'predict_proba') else [[1-p, p] for p in self.model.predict(high_risk)])[0, 1] if hasattr(self.model, 'predict_proba') else self.model.predict(high_risk)[0])
+        proba = self._predict_rejection_prob(high_risk)
         threshold = self.meta['threshold']
         
         # High risk should be above threshold (rejected)

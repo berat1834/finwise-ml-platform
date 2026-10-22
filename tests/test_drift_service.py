@@ -9,9 +9,9 @@ sys.path.insert(0, str(_ROOT))
 sys.path.insert(0, str(_ROOT / "backend"))
 
 try:
-    from backend.app.services.drift_service import calculate_psi, calculate_categorical_csi, DriftService
-except ImportError:
     from app.services.drift_service import calculate_psi, calculate_categorical_csi, DriftService
+except ImportError:
+    from backend.app.services.drift_service import calculate_psi, calculate_categorical_csi, DriftService  # type: ignore[import-not-found]
 
 
 class TestDriftService:
