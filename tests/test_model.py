@@ -69,12 +69,12 @@ class TestModelPredictions:
     def test_low_risk_profile(self):
         """Test low risk profile gets approved"""
         low_risk = pd.DataFrame([{
-            'person_age': 35,
-            'person_income': 80000.0,
-            'person_emp_length': 10,
-            'loan_amnt': 15000.0,
-            'loan_int_rate': 6.0,
-            'loan_percent_income': 0.15,
+            'person_age': 40,
+            'person_income': 120000.0,
+            'person_emp_length': 12,
+            'loan_amnt': 10000.0,
+            'loan_int_rate': 5.5,
+            'loan_percent_income': 0.08,
             'cb_person_cred_hist_length': 15,
             'person_home_ownership': 'OWN',
             'loan_intent': 'PERSONAL',

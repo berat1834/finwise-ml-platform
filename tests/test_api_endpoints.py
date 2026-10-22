@@ -276,3 +276,28 @@ class TestInputSanitization:
         })
         # Should not succeed
         assert response.status_code in [401, 400]
+
+
+class TestDriftEndpoints:
+    """Test /api/v2/monitoring/drift endpoints"""
+
+    def test_get_drift_without_auth(self, client):
+        resp = client.get("/api/v2/monitoring/drift")
+        assert resp.status_code == 401
+
+    def test_get_drift_with_auth(self, client, auth_headers):
+        resp = client.get("/api/v2/monitoring/drift", headers=auth_headers)
+        assert resp.status_code == 200
+        data = resp.json
+        assert "overall_status" in data
+        assert "overall_psi" in data
+        assert "features" in data
+        assert "threshold_benchmarks" in data
+
+    def test_recalculate_drift_with_auth(self, client, auth_headers):
+        resp = client.post("/api/v2/monitoring/drift/recalculate", headers=auth_headers)
+        assert resp.status_code == 200
+        data = resp.json
+        assert "message" in data
+        assert "data" in data
+

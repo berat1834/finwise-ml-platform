@@ -2456,6 +2456,33 @@ def dashboard_stats():
         }
     })
 
+
+@dashboard_bp.route("/api/v2/monitoring/drift", methods=["GET"])
+@jwt_required()
+def get_model_drift():
+    """Returns population stability index (PSI) and feature-level drift metrics."""
+    from app.services.drift_service import DriftService
+    try:
+        sample_window = request.args.get("window", default=500, type=int)
+        analysis = DriftService.analyze_drift(sample_window=sample_window)
+        return jsonify(analysis), 200
+    except Exception as exc:
+        logger.exception("Error in /api/v2/monitoring/drift: %s", exc)
+        return jsonify({"error": "Failed to compute drift analysis", "detail": str(exc)}), 500
+
+
+@dashboard_bp.route("/api/v2/monitoring/drift/recalculate", methods=["POST"])
+@jwt_required()
+def recalculate_model_drift():
+    """Forces fresh re-computation of drift analysis."""
+    from app.services.drift_service import DriftService
+    try:
+        analysis = DriftService.analyze_drift(sample_window=500)
+        return jsonify({"message": "Drift metrics recalculated successfully", "data": analysis}), 200
+    except Exception as exc:
+        logger.exception("Error in recalculate_model_drift: %s", exc)
+        return jsonify({"error": "Failed to recalculate drift", "detail": str(exc)}), 500
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------

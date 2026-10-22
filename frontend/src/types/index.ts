@@ -125,3 +125,34 @@ export interface BankOffersResponse {
   disclaimer: string;
 }
 
+export interface FeatureDriftMetric {
+  type: "numeric" | "categorical";
+  psi: number;
+  ks_statistic?: number;
+  ks_pvalue?: number;
+  drift_detected: boolean;
+  status: "NORMAL" | "WARNING" | "CRITICAL";
+  baseline_mean?: number;
+  current_mean?: number;
+  top_baseline_category?: string;
+  top_current_category?: string;
+}
+
+export interface DriftAnalysisResponse {
+  overall_status: "STABLE" | "MODERATE_DRIFT" | "CRITICAL_DRIFT";
+  overall_psi: number;
+  max_feature_psi: number;
+  severity: "success" | "warning" | "danger";
+  drifted_features_count: number;
+  total_evaluated_features: number;
+  total_live_applications_in_db: number;
+  evaluation_window_size: number;
+  summary_message: string;
+  recommendations: string[];
+  features: Record<string, FeatureDriftMetric>;
+  threshold_benchmarks: {
+    stable: string;
+    moderate: string;
+    critical: string;
+  };
+}
