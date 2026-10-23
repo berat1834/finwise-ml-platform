@@ -9,6 +9,7 @@ Production-ready training pipeline for Credit Risk model
 """
 import json
 from datetime import datetime
+from typing import Any
 import joblib
 import numpy as np
 import pandas as pd
@@ -118,11 +119,12 @@ def fit_with_cv(X, y, pipe: Pipeline):
     pos_recall = make_scorer(recall_score, pos_label=1)
 
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+    refit_metric: Any = "roc_auc"
     grid = GridSearchCV(
         pipe,
         param_grid=param_grid,
         scoring={"roc_auc": "roc_auc", "pos_recall": pos_recall},
-        refit="roc_auc",
+        refit=refit_metric,
         cv=cv,
         n_jobs=-1,
         verbose=1,
@@ -141,11 +143,12 @@ def fit_with_cv_xgb(X, y, pipe: Pipeline):
     pos_recall = make_scorer(recall_score, pos_label=1)
 
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+    refit_metric: Any = "roc_auc"
     grid = GridSearchCV(
         pipe,
         param_grid=param_grid,
         scoring={"roc_auc": "roc_auc", "pos_recall": pos_recall},
-        refit="roc_auc",
+        refit=refit_metric,
         cv=cv,
         n_jobs=-1,
         verbose=1,
@@ -244,7 +247,7 @@ def persist(model: Pipeline, meta: dict):
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
 
-def split_dataset(X: pd.DataFrame, y: pd.Series):
+def split_dataset(X: pd.DataFrame, y: pd.Series) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
     """Create deterministic train/validation/test splits.
 
     Split policy (stratified):
@@ -262,7 +265,14 @@ def split_dataset(X: pd.DataFrame, y: pd.Series):
         random_state=RANDOM_STATE,
         stratify=y_train_full,
     )
-    return X_train, X_val, X_test, y_train, y_val, y_test
+    return (
+        pd.DataFrame(X_train),
+        pd.DataFrame(X_val),
+        pd.DataFrame(X_test),
+        pd.Series(y_train),
+        pd.Series(y_val),
+        pd.Series(y_test),
+    )
 
 
 def main(csv_path: str = "credit_risk_dataset.csv", fairness_strategy: str = "class_weight", 
@@ -273,8 +283,8 @@ def main(csv_path: str = "credit_risk_dataset.csv", fairness_strategy: str = "cl
     # Build features after leakage columns are removed.
     cat_cols, num_cols = build_feature_lists(df)
 
-    X = df[cat_cols + num_cols]
-    y = df[TARGET_COL]
+    X = pd.DataFrame(df[cat_cols + num_cols])
+    y = pd.Series(df[TARGET_COL])
 
     X_tr, X_val, X_test, y_tr, y_val, y_test = split_dataset(X, y)
 

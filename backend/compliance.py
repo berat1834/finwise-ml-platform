@@ -65,7 +65,7 @@ class ComplianceManager:
         return gdpr_request
     
     @staticmethod
-    def export_user_data(user_id: int) -> Dict:
+    def export_user_data(user_id: int) -> Optional[Dict]:
         """Export all user data (GDPR Right to Data Portability)"""
         from app.models.models import User, Application, AuditLog
         

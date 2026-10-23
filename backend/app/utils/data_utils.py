@@ -47,10 +47,10 @@ def build_feature_lists(df: pd.DataFrame):
 
 
 def clean_outliers(df: pd.DataFrame) -> pd.DataFrame:
-    df = df[~((df['person_age'] > 100) | (df['person_age'] < 18))]
-    df = df[~(df['person_emp_length'] > 60)]
-    df = df[~(df['person_income'] > 1_000_000)]
-    return df
+    mask = ~((df['person_age'] > 100) | (df['person_age'] < 18))
+    mask = mask & ~(df['person_emp_length'] > 60)
+    mask = mask & ~(df['person_income'] > 1_000_000)
+    return pd.DataFrame(df.loc[mask])
 
 
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:

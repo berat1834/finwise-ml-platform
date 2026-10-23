@@ -23,9 +23,9 @@ def main():
     # We will enforce Demographic Parity on 'income_quartile'
     df['income_quartile'] = get_income_quartile(df['person_income'])
     
-    X = df[cat_cols + num_cols]
-    y = df['loan_status']
-    sensitive_features = df['income_quartile']
+    X = pd.DataFrame(df[cat_cols + num_cols])
+    y = pd.Series(df['loan_status'])
+    sensitive_features = pd.Series(df['income_quartile'])
     
     X_tr, X_val, X_test, y_tr, y_val, y_test = split_dataset(X, y)
     A_tr = sensitive_features.loc[X_tr.index]

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useSyncExternalStore } from "react";
 import { 
   Settings, 
   User as UserIcon, 
@@ -33,10 +33,12 @@ function getPasswordRules(password: string) {
   ];
 }
 
+const emptySubscribe = () => () => {};
+
 export default function SettingsView() {
   const { theme, setTheme } = useTheme();
   const { username: authUsername, role: authRole, logout } = useAuthStore();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   // User profile state
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -57,32 +59,35 @@ export default function SettingsView() {
   const [passSuccess, setPassSuccess] = useState("");
   const [passError, setPassError] = useState("");
 
-  // Preferences
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
   const rules = useMemo(() => getPasswordRules(newPassword), [newPassword]);
   const newPasswordValid = rules.every((r) => r.ok);
   const passwordsMatch = newPassword.length > 0 && newPassword === confirmPassword;
 
-  const fetchProfile = React.useCallback(async () => {
-    setProfileLoading(true);
-    setProfileError("");
-    try {
-      const data = await getUserProfile();
-      setProfile(data);
-      setEmailInput(data.email || "");
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Profil bilgileri yüklenemedi";
-      setProfileError(msg);
-    } finally {
-      setProfileLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    setMounted(true);
-    fetchProfile();
-  }, [fetchProfile]);
+    let ignore = false;
+    const run = async () => {
+      try {
+        const data = await getUserProfile();
+        if (!ignore) {
+          setProfile(data);
+          setEmailInput(data.email || "");
+        }
+      } catch (err: unknown) {
+        if (!ignore) {
+          const msg = err instanceof Error ? err.message : "Profil bilgileri yüklenemedi";
+          setProfileError(msg);
+        }
+      } finally {
+        if (!ignore) {
+          setProfileLoading(false);
+        }
+      }
+    };
+    run();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleUpdateEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,6 +192,12 @@ export default function SettingsView() {
                 {currentRole.label}
               </span>
             </div>
+
+            {profileError && (
+              <div className="mt-3 p-2.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 text-xs rounded-xl text-center">
+                {profileError}
+              </div>
+            )}
 
             {profileLoading ? (
               <div className="py-8 flex justify-center">

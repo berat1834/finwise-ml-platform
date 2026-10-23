@@ -7,6 +7,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import db, Application, ManualOverride, User
 from datetime import datetime
+from typing import Optional
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,7 +62,7 @@ class CreditDecisionEngine:
         return loan_amount <= threshold
     
     @staticmethod
-    def requires_higher_approval(loan_amount: float, current_role: str) -> str:
+    def requires_higher_approval(loan_amount: float, current_role: str) -> Optional[str]:
         """Determine if higher approval is needed"""
         current_threshold = CreditDecisionEngine.APPROVAL_LEVELS.get(current_role.lower(), 0)
         
@@ -285,6 +286,8 @@ def get_review_queue():
     try:
         current_user_id = get_jwt_identity()
         user = User.query.get(current_user_id)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
         
         # Filter based on role authority
         user_limit = CreditDecisionEngine.APPROVAL_LEVELS.get(user.role.lower(), 0)

@@ -4,7 +4,7 @@
  * Requires NEXT_PUBLIC_API_URL environment variable to be set.
  * Handles JWT authentication, 401 auto-logout, and structured error responses.
  */
-import { LoginResponse, RegisterRequest, RegisterResponse, DashboardStats, HistoryResponse, CreditEvaluationRequest, CreditEvaluationResponse } from "@/types";
+import { LoginResponse, RegisterRequest, RegisterResponse, DashboardStats, HistoryResponse } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -56,7 +56,7 @@ export async function fetchApi<T = any>(endpoint: string, options: RequestInit =
         ...options.headers,
       },
     });
-  } catch (error) {
+  } catch {
     throw new ApiError("Ağ hatası: Sunucuya bağlanılamadı.", 503);
   }
 

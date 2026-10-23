@@ -1,4 +1,4 @@
-﻿"""
+"""
 Enhanced Bias and Fairness Analysis System
 Regulatory compliance for financial institutions
 - Disparate Impact Analysis (80% rule)
@@ -13,7 +13,7 @@ import joblib
 import json
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any, cast
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, roc_auc_score
@@ -221,11 +221,11 @@ class FairnessAnalyzer:
                     'demographic_parity_difference': float(dp_diff),
                     'demographic_parity_ratio': float(dp_ratio),
                     'group_metrics': {
-                        str(k): {metric: float(v) for metric, v in vals.items()}
-                        for k, vals in metric_frame.by_group.to_dict('index').items()
+                        str(k): {metric: float(cast(Any, v)) for metric, v in vals.items()}
+                        for k, vals in cast(Any, metric_frame.by_group).to_dict('index').items()
                     },
                     'overall_metrics': {
-                        metric: float(val) for metric, val in metric_frame.overall.items()
+                        metric: float(cast(Any, val)) for metric, val in cast(Any, metric_frame.overall).items()
                     },
                     'compliant': abs(dp_diff) <= self.ACCEPTABLE_PARITY_DIFFERENCE
                 }
@@ -262,11 +262,11 @@ class FairnessAnalyzer:
                 tpr_diff = tpr_by_group.max() - tpr_by_group.min()
                 
                 results[group_name] = {
-                    'true_positive_rates': {str(k): float(v) for k, v in tpr_by_group.items()},
+                    'true_positive_rates': {str(k): float(cast(Any, v)) for k, v in cast(Any, tpr_by_group).items()},
                     'tpr_difference': float(tpr_diff),
                     'false_negative_rates': {
-                        str(k): float(v) for k, v in 
-                        metric_frame.by_group['false_negative_rate'].items()
+                        str(k): float(cast(Any, v)) for k, v in 
+                        cast(Any, metric_frame.by_group['false_negative_rate']).items()
                     },
                     'compliant': tpr_diff <= self.ACCEPTABLE_PARITY_DIFFERENCE
                 }
@@ -307,8 +307,8 @@ class FairnessAnalyzer:
                     'equalized_odds_difference': float(eo_diff),
                     'equalized_odds_ratio': float(eo_ratio),
                     'group_metrics': {
-                        str(k): {metric: float(v) for metric, v in vals.items()}
-                        for k, vals in metric_frame.by_group.to_dict('index').items()
+                        str(k): {metric: float(cast(Any, v)) for metric, v in vals.items()}
+                        for k, vals in cast(Any, metric_frame.by_group).to_dict('index').items()
                     },
                     'compliant': abs(eo_diff) <= self.ACCEPTABLE_PARITY_DIFFERENCE
                 }

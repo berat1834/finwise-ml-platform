@@ -239,7 +239,7 @@ def generate_credit_report_pdf(app_record, analyst_user=None) -> bytes:
         for item in shap_data[:5]:
             fname = item.get("feature", "")
             contrib = float(item.get("contribution", 0.0))
-            flabel = feature_labels.get(fname, fname)
+            flabel = str(feature_labels.get(fname, fname) or fname)
             impact = "Riski Düşürücü (Olumlu)" if contrib < 0 else "Riski Artırıcı (Olumsuz)"
             color_tag = emerald_green if contrib < 0 else danger_red
             shap_rows.append([

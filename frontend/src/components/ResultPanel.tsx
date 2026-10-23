@@ -10,9 +10,7 @@ import {
   FileText, 
   FileJson,
   Building2,
-  ExternalLink,
-  Sparkles,
-  ChevronRight
+  ExternalLink
 } from 'lucide-react';
 import ShapChart from './ShapChart';
 import ScenarioSimulator from './ScenarioSimulator';

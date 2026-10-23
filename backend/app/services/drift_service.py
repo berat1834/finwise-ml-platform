@@ -94,8 +94,8 @@ def calculate_categorical_csi(expected: pd.Series, actual: pd.Series) -> float:
     eps = 1e-4
     csi_val = 0.0
     for cat in all_categories:
-        e = exp_counts.get(cat, 0.0) + eps
-        a = act_counts.get(cat, 0.0) + eps
+        e = float(exp_counts.get(cat, 0.0) or 0.0) + eps
+        a = float(act_counts.get(cat, 0.0) or 0.0) + eps
         csi_val += (a - e) * np.log(a / e)
 
     return float(max(0.0, csi_val))
@@ -169,14 +169,16 @@ class DriftService:
 
         for col in target_numeric:
             if baseline_df is not None and col in baseline_df.columns and col in current_df.columns:
-                base_series = pd.to_numeric(baseline_df[col], errors="coerce").dropna().values
-                curr_series = pd.to_numeric(current_df[col], errors="coerce").dropna().values
+                base_series = np.asarray(pd.to_numeric(baseline_df[col], errors="coerce").dropna().values, dtype=float)
+                curr_series = np.asarray(pd.to_numeric(current_df[col], errors="coerce").dropna().values, dtype=float)
 
                 psi = calculate_psi(base_series, curr_series)
                 total_psi_scores.append(psi)
 
                 # Kolmogorov-Smirnov 2-sample test
-                ks_stat, ks_pvalue = stats.ks_2samp(base_series, curr_series)
+                ks_res: Any = stats.ks_2samp(base_series, curr_series)
+                ks_stat = float(ks_res.statistic)
+                ks_pvalue = float(ks_res.pvalue)
                 is_drifted = psi >= 0.10 or ks_pvalue < 0.01
 
                 if is_drifted:
@@ -191,8 +193,8 @@ class DriftService:
                 feature_metrics[col] = {
                     "type": "numeric",
                     "psi": round(psi, 4),
-                    "ks_statistic": round(float(ks_stat), 4),
-                    "ks_pvalue": round(float(ks_pvalue), 4),
+                    "ks_statistic": round(ks_stat, 4),
+                    "ks_pvalue": round(ks_pvalue, 4),
                     "drift_detected": bool(is_drifted),
                     "status": status_label,
                     "baseline_mean": round(float(np.mean(base_series)), 2) if len(base_series) else 0.0,
@@ -209,8 +211,10 @@ class DriftService:
 
         for col in target_categorical:
             if baseline_df is not None and col in baseline_df.columns and col in current_df.columns:
-                base_cat = baseline_df[col].dropna().astype(str)
-                curr_cat = current_df[col].dropna().astype(str)
+                base_col = baseline_df[col]
+                curr_col = current_df[col]
+                base_cat = base_col.dropna().astype(str) if isinstance(base_col, pd.Series) else pd.Series(base_col).dropna().astype(str)
+                curr_cat = curr_col.dropna().astype(str) if isinstance(curr_col, pd.Series) else pd.Series(curr_col).dropna().astype(str)
 
                 csi = calculate_categorical_csi(base_cat, curr_cat)
                 total_psi_scores.append(csi)
