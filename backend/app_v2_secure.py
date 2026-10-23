@@ -19,11 +19,8 @@ from functools import wraps
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from threading import Lock
-import sys
-from typing import Any, cast, Optional, Dict, List, Union
+from typing import Any, cast
 
-# Add app subdirectories to path so direct imports work
-app_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app')
 import bleach
 import joblib
 import numpy as np
@@ -2684,7 +2681,6 @@ create_app()
 
 
 if __name__ == "__main__":
-    import sys
 
     print("\n" + "=" * 60)
     print("FinWise Credit Risk API v2 - Secure Server")
