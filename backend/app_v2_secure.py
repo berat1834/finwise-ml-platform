@@ -20,6 +20,7 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from threading import Lock
 import sys
+from typing import Any, cast, Optional, Dict, List, Union
 
 # Add app subdirectories to path so direct imports work
 app_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app')
@@ -112,7 +113,7 @@ def validate_config():
 # validate_config()
 
 CORS(
-    app,
+    cast(Any, app),
     origins=_split_csv_env(
         "ALLOWED_ORIGINS",
         "http://localhost:5000,http://127.0.0.1:5000,http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000,http://localhost:3001",
@@ -1038,7 +1039,8 @@ def simulate_improvement_options():
 
     evaluated = []
     for scenario in candidate_scenarios:
-        scenario_row = _apply_simulation_overrides(base_row, scenario["overrides"])
+        scenario_overrides = cast(dict, scenario.get("overrides") or {})
+        scenario_row = _apply_simulation_overrides(base_row, scenario_overrides)
         simulated = _simulate_from_base_row(scenario_row, route_key=f"simulate_{scenario['code']}")
         delta = round(simulated["onay_olasiligi"] - original_sim["onay_olasiligi"], 4)
         evaluated.append({
@@ -1707,7 +1709,8 @@ def get_real_bank_offers():
 
     offers = []
     for item in bank_catalog:
-        effective_monthly_rate = max(0.015, item["base_rate"] + rate_adjustment)
+        item_base_rate = float(cast(Any, item).get("base_rate", 0.04))
+        effective_monthly_rate = max(0.015, item_base_rate + rate_adjustment)
         # KKDF %15 + BSMV %5 = %20 toplam vergi
         gross_monthly_rate = effective_monthly_rate * 1.20
 
@@ -1720,7 +1723,7 @@ def get_real_bank_offers():
 
         total_repayment = monthly_installment * term
         total_interest = total_repayment - amount
-        fee = 0.0 if item["fee_free"] else round(amount * 0.005 * 1.05, 2)  # %0.5 + %5 BSMV
+        fee = 0.0 if bool(cast(Any, item).get("fee_free", False)) else round(amount * 0.005 * 1.05, 2)  # %0.5 + %5 BSMV
 
         # Yıllık maliyet oranı (YMO) yaklaşık
         annual_cost_rate = round(gross_monthly_rate * 12.0 * 100.0, 2)
