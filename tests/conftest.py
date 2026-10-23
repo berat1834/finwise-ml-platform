@@ -150,5 +150,16 @@ def high_risk_application_data():
 def db_session(app):
     """Database session for testing"""
     with app.app_context():
-        yield db.session
-        db.session.rollback()
+        # Clean up any leftover test-specific entities before running test
+        db.session.query(User).filter(User.username.in_(['newuser', 'testuser2', 'duplicate'])).delete(synchronize_session=False)
+        db.session.commit()
+        try:
+            yield db.session
+        finally:
+            db.session.rollback()
+            try:
+                db.session.query(User).filter(User.username.in_(['newuser', 'testuser2', 'duplicate'])).delete(synchronize_session=False)
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
+

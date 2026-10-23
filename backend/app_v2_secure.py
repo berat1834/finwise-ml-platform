@@ -721,6 +721,7 @@ def health():
         db_ok = False
     return jsonify({
         "status": "up",
+        "uptime_seconds": int(time.time() - APP_START_TS),
         "database": "connected" if db_ok else "disconnected",
         "model": "loaded" if (PRIMARY_MODEL is not None) else "not_loaded",
         "routing_mode": router.mode,
@@ -728,6 +729,7 @@ def health():
         "timestamp": utcnow().isoformat(),
         "version": "2.0.0",
     })
+
 
 
 @credit_bp.route("/health/startup")

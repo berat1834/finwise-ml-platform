@@ -37,10 +37,11 @@ def _load_baseline_df() -> Optional[pd.DataFrame]:
     return None
 
 
-def calculate_psi(expected: np.ndarray, actual: np.ndarray, num_buckets: int = 10) -> float:
+def calculate_psi(expected: np.ndarray, actual: np.ndarray, num_buckets: Optional[int] = None) -> float:
     """
     Calculates the Population Stability Index (PSI) between expected (baseline)
-    and actual (production) numeric feature distributions.
+    and actual (production) numeric feature distributions using adaptive binning
+    and standard Laplace smoothing to prevent small-sample distortions.
     
     Formula: PSI = sum((actual% - expected%) * ln(actual% / expected%))
     """
@@ -53,6 +54,16 @@ def calculate_psi(expected: np.ndarray, actual: np.ndarray, num_buckets: int = 1
 
     if len(expected) == 0 or len(actual) == 0:
         return 0.0
+
+    # Adaptive bucketing based on sample size:
+    # 10 buckets requires at least ~50-100 observations to avoid empty-bin artifacts.
+    if num_buckets is None:
+        if len(actual) < 50:
+            num_buckets = 4
+        elif len(actual) < 100:
+            num_buckets = 5
+        else:
+            num_buckets = 10
 
     # Determine quantile bucket boundaries from baseline
     percentiles = np.linspace(0, 100, num_buckets + 1)
@@ -70,10 +81,10 @@ def calculate_psi(expected: np.ndarray, actual: np.ndarray, num_buckets: int = 1
     exp_counts, _ = np.histogram(expected, bins=bins)
     act_counts, _ = np.histogram(actual, bins=bins)
 
-    # Convert to proportions with Laplace/epsilon smoothing
-    eps = 1e-4
-    exp_pct = (exp_counts + eps) / (len(expected) + eps * len(exp_counts))
-    act_pct = (act_counts + eps) / (len(actual) + eps * len(act_counts))
+    # Convert to proportions with standard Laplace smoothing: (count + 1) / (N + k)
+    k = len(exp_counts)
+    exp_pct = (exp_counts + 1.0) / (len(expected) + k)
+    act_pct = (act_counts + 1.0) / (len(actual) + k)
 
     # Calculate PSI
     psi_val = np.sum((act_pct - exp_pct) * np.log(act_pct / exp_pct))
@@ -82,20 +93,26 @@ def calculate_psi(expected: np.ndarray, actual: np.ndarray, num_buckets: int = 1
 
 def calculate_categorical_csi(expected: pd.Series, actual: pd.Series) -> float:
     """
-    Calculates Characteristic Stability Index (CSI) for categorical features.
+    Calculates Characteristic Stability Index (CSI) for categorical features
+    with Laplace smoothing.
     """
-    all_categories = set(expected.dropna().unique()).union(set(actual.dropna().unique()))
+    all_categories = sorted(list(set(expected.dropna().unique()).union(set(actual.dropna().unique()))))
     if not all_categories:
         return 0.0
 
-    exp_counts = expected.value_counts(normalize=True)
-    act_counts = actual.value_counts(normalize=True)
+    exp_counts = expected.value_counts()
+    act_counts = actual.value_counts()
+    k = len(all_categories)
+    exp_total = len(expected.dropna())
+    act_total = len(actual.dropna())
 
-    eps = 1e-4
+    if exp_total == 0 or act_total == 0:
+        return 0.0
+
     csi_val = 0.0
     for cat in all_categories:
-        e = float(exp_counts.get(cat, 0.0) or 0.0) + eps
-        a = float(act_counts.get(cat, 0.0) or 0.0) + eps
+        e = (float(exp_counts.get(cat, 0)) + 1.0) / (exp_total + k)
+        a = (float(act_counts.get(cat, 0)) + 1.0) / (act_total + k)
         csi_val += (a - e) * np.log(a / e)
 
     return float(max(0.0, csi_val))
@@ -142,15 +159,12 @@ class DriftService:
         current_df = pd.DataFrame(app_rows) if app_rows else pd.DataFrame()
         total_live_apps = len(current_df)
 
-        # If few applications exist in dev environment, supplement with a representative sample
-        if baseline_df is not None and len(current_df) < 30:
+        # If zero applications exist in database, provide a representative sample for preview
+        if baseline_df is not None and len(current_df) == 0:
             synth_sample = baseline_df.sample(min(150, len(baseline_df)), random_state=42).copy()
-            # Inject subtle realistic shift in loan amounts to demonstrate detection
             synth_sample["loan_amnt"] = synth_sample["loan_amnt"] * 1.05
-            if not current_df.empty:
-                current_df = pd.concat([current_df, synth_sample], ignore_index=True)
-            else:
-                current_df = synth_sample
+            current_df = synth_sample
+
 
         feature_metrics: Dict[str, Dict[str, Any]] = {}
         total_psi_scores: List[float] = []
@@ -264,6 +278,15 @@ class DriftService:
         else:
             recommendations.append("Mevcut model parametreleri ve eşik değeri (0.50) güvenle üretime devam edebilir.")
 
+        sample_warning = total_live_apps > 0 and total_live_apps < 100
+        sample_warning_message = (
+            f"İstatistiki Bilgi: Canlı başvuru sayısı (N={total_live_apps}) kararlı PSI/CSI analizi için düşüktür "
+            "(Önerilen N >= 100). Göstergeler yönsel eğilimi temsil eder."
+            if sample_warning
+            else None
+        )
+
+
         return {
             "overall_status": overall_status,
             "overall_psi": round(overall_psi, 4),
@@ -273,6 +296,8 @@ class DriftService:
             "total_evaluated_features": len(feature_metrics),
             "total_live_applications_in_db": total_live_apps,
             "evaluation_window_size": len(current_df),
+            "sample_warning": sample_warning,
+            "sample_warning_message": sample_warning_message,
             "summary_message": summary_message,
             "recommendations": recommendations,
             "features": feature_metrics,
@@ -282,3 +307,4 @@ class DriftService:
                 "critical": ">= 0.25 (Yüksek Kayma - Yeniden Eğitim Gerekli)",
             },
         }
+

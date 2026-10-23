@@ -147,6 +147,8 @@ export interface DriftAnalysisResponse {
   total_evaluated_features: number;
   total_live_applications_in_db: number;
   evaluation_window_size: number;
+  sample_warning?: boolean;
+  sample_warning_message?: string;
   summary_message: string;
   recommendations: string[];
   features: Record<string, FeatureDriftMetric>;

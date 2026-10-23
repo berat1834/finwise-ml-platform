@@ -149,8 +149,20 @@ export default function ModelAnalysisView() {
         </div>
       ) : driftData ? (
         <>
+          {/* Sample Size Guidance Banner if N < 100 */}
+          {driftData.sample_warning_message && (
+            <div className="p-4 bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800 rounded-xl text-sky-800 dark:text-sky-300 text-sm flex items-start gap-3">
+              <Info size={18} className="shrink-0 mt-0.5 text-sky-500" />
+              <div>
+                <span className="font-semibold">İstatistiki Güvenilirlik Notu: </span>
+                {driftData.sample_warning_message}
+              </div>
+            </div>
+          )}
+
           {/* Executive Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
             <div className="bg-white dark:bg-dark-800 p-5 rounded-2xl border border-slate-200 dark:border-dark-700 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
